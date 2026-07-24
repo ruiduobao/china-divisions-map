@@ -50,6 +50,37 @@
         }
     });
 </script>
+<script>
+    function sendToParent(type, value)  {
+    let message = {};
+    if(type === "code") {
+        message = {
+            "type": "updateMapByCode",
+            "code": value
+        };
+    } else if(type === "address") {
+        message = {
+            "type": "updateMapByAddress",
+            "address": value
+        };
+    }
+    window.parent.postMessage(message, '*');
+    }
+    // 为父元素添加事件代理
+    document.body.addEventListener('click', function(event) {
+    if (event.target.tagName === 'A') {
+        event.preventDefault();
+
+        if (event.target.hasAttribute('data-code')) {
+            const dataCode = event.target.getAttribute('data-code');
+            sendToParent("code", dataCode);
+        } else if (event.target.hasAttribute('data-address')) {
+            const dataAddress = event.target.getAttribute('data-address');
+            sendToParent("address", dataAddress);
+        }
+        }
+    });
+</script>
 <svg id="mindmap"></svg>
 <script src="https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-view@0.15.4/dist/browser/index.js"></script><script src="https://cdn.jsdelivr.net/npm/markmap-toolbar@0.15.4/dist/index.js"></script><script>(r => {
           setTimeout(r);

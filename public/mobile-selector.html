@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>行政区划</title>
+<style>
+/* 全部用 px 写死，不依赖 vh/vw/calc/env，确保任何浏览器一致 */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #f0f2f5;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: #1a1a1a;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+    padding: 0;
+}
+
+/* ========== 顶部 ========== */
+.top {
+    flex-shrink: 0;
+    background: #1a365d;
+    color: #fff;
+    padding: 12px 14px 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    z-index: 10;
+}
+
+.title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.reset-btn {
+    font-size: 13px;
+    color: rgba(255,255,255,0.85);
+    padding: 6px 10px;
+    border-radius: 4px;
+    background: rgba(255,255,255,0.12);
+}
+.reset-btn:active { background: rgba(255,255,255,0.25); }
+
+/* 进度点 */
+.steps {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    margin-bottom: 8px;
+}
+.step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    position: relative;
+}
+.step + .step::before {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: -50%;
+    right: 50%;
+    height: 2px;
+    background: rgba(255,255,255,0.2);
+}
+.step.done + .step::before,
+.step.active::before {
+    background: #48bb78;
+}
+.step-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 10px;
+    line-height: 1;
+    font-weight: bold;
+    z-index: 1;
+}
+.step.done .step-dot { background: #48bb78; }
+.step.done .step-dot::after { content: '✓'; }
+.step.active .step-dot {
+    background: #ffd166;
+    box-shadow: 0 0 0 4px rgba(255,209,102,0.3);
+}
+.step-label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1;
+}
+.step.active .step-label { color: #ffd166; font-weight: 600; }
+.step.done .step-label { color: #fff; }
+
+/* 面包屑 */
+.crumbs {
+    font-size: 13px;
+    color: rgba(255,255,255,0.9);
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 2px;
+    -webkit-overflow-scrolling: touch;
+}
+.crumbs::-webkit-scrollbar { display: none; }
+.crumb { display: inline; }
+.crumb-active { color: #ffd166; font-weight: 600; }
+.crumb-tap {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+.crumb-sep { margin: 0 4px; opacity: 0.5; }
+
+/* ========== 当前层标题 ========== */
+.section-head {
+    flex-shrink: 0;
+    background: #fff;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e0e0e0;
+}
+.section-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a365d;
+}
+.section-hint {
+    font-size: 12px;
+    color: #38a169;
+    font-weight: 500;
+}
+
+/* ========== 列表区（核心） ========== */
+.list {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    padding-bottom: 70px; /* 给底栏留位置 */
+}
+.list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border-bottom: 1px solid #f0f0f0;
+    cursor: pointer;
+    min-height: 64px;
+}
+.list-item:active { background: #f5f5f5; }
+.list-item-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: #f0f0f0;
+    color: #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+.list-item-text {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+}
+.list-item-title {
+    font-size: 16px;
+    color: #1a1a1a;
+    font-weight: 500;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.list-item-sub {
+    font-size: 12px;
+    color: #999;
+    margin-top: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.list-item-arrow {
+    color: #ccc;
+    font-size: 22px;
+    flex-shrink: 0;
+    font-weight: 300;
+}
+.list-item.selected { background: #ebf8ff; }
+.list-item.selected .list-item-icon { background: #2c5282; color: #fff; }
+.list-item.selected .list-item-title { color: #2c5282; font-weight: 600; }
+.list-item.selected .list-item-arrow { display: none; }
+.list-item .check-mark {
+    color: #38a169;
+    font-size: 24px;
+    flex-shrink: 0;
+    font-weight: bold;
+}
+
+/* 空状态/加载/错误 */
+.empty, .loading {
+    padding: 60px 20px;
+    text-align: center;
+    color: #999;
+}
+.empty-icon { font-size: 56px; margin-bottom: 16px; opacity: 0.4; }
+.empty-text { font-size: 15px; line-height: 1.6; margin-bottom: 20px; }
+.empty-action {
+    display: inline-block;
+    padding: 12px 28px;
+    background: #2c5282;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500;
+}
+.empty-action:active { background: #1a365d; }
+.loading-text { font-size: 15px; }
+
+/* ========== 底部固定操作栏 ========== */
+.foot {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #fff;
+    padding: 10px 12px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    gap: 8px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+    z-index: 30;
+}
+.btn {
+    flex: 1;
+    padding: 14px 8px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    min-height: 50px;
+}
+.btn:active { opacity: 0.7; }
+.btn-icon {
+    flex: 0 0 50px;
+    background: #f0f0f0;
+    color: #1a1a1a;
+    font-size: 20px;
+}
+.btn-primary {
+    background: #1a365d;
+    color: #fff;
+}
+.btn-success {
+    background: #38a169;
+    color: #fff;
+}
+
+/* ========== 选项弹窗 ========== */
+.overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    align-items: flex-end;
+    justify-content: center;
+}
+.overlay.show { display: flex; }
+.sheet {
+    width: 100%;
+    background: #fff;
+    border-radius: 16px 16px 0 0;
+    max-height: 85%;
+    display: flex;
+    flex-direction: column;
+    animation: slideUp 0.25s ease-out;
+    /* 跳出父子 stacking context：避免被任何 .foot 覆盖 */
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+}
+@keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+}
+.sheet-handle {
+    width: 40px;
+    height: 4px;
+    background: #d0d0d0;
+    border-radius: 2px;
+    margin: 10px auto;
+    flex-shrink: 0;
+}
+.sheet-head {
+    padding: 0 16px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+    flex-shrink: 0;
+}
+.sheet-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: #1a365d;
+}
+.sheet-close {
+    font-size: 28px;
+    color: #999;
+    padding: 0 8px;
+    line-height: 1;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+.sheet-body {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+}
+.sheet-foot {
+    padding: 10px 16px;
+    border-top: 1px solid #f0f0f0;
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    background: #fafafa;
+    /* 适配全面屏：安全区 */
+    padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+}
+.sheet-foot button {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    border: 0;
+    cursor: pointer;
+}
+.sheet-foot .btn-cancel {
+    background: #f0f0f0;
+    color: #333;
+}
+.sheet-foot .btn-ok {
+    background: #1a365d;
+    color: #fff;
+}
+</style>
+</head>
+<body>
+
+<!-- 顶部 -->
+<div class="top">
+    <div class="title-row">
+        <span class="title">🗺️ 行政区划</span>
+        <button class="reset-btn" onclick="resetAll()">重置</button>
+    </div>
+    <div class="steps" id="steps">
+        <div class="step" data-level="province" onclick="goTo('province')"><div class="step-dot"></div><div class="step-label">省</div></div>
+        <div class="step" data-level="city" onclick="goTo('city')"><div class="step-dot"></div><div class="step-label">市</div></div>
+        <div class="step" data-level="county" onclick="goTo('county')"><div class="step-dot"></div><div class="step-label">县</div></div>
+        <div class="step" data-level="town" onclick="goTo('town')"><div class="step-dot"></div><div class="step-label">乡镇</div></div>
+        <div class="step" data-level="village" onclick="goTo('village')"><div class="step-dot"></div><div class="step-label">村</div></div>
+    </div>
+    <div class="crumbs" id="crumbs"></div>
+</div>
+
+<!-- 当前层标题 -->
+<div class="section-head">
+    <span class="section-title" id="sectionTitle"></span>
+    <span class="section-hint" id="sectionHint"></span>
+</div>
+
+<!-- 列表 -->
+<div class="list" id="list">
+    <div class="loading"><div class="loading-text">加载中...</div></div>
+</div>
+
+<!-- 底部操作栏 -->
+<div class="foot">
+    <button class="btn btn-icon" onclick="openVillageOptions()">⚙️</button>
+    <button class="btn btn-primary" onclick="viewMap()">📍 看地图</button>
+    <button class="btn btn-success" onclick="downloadBatch()">📥 下载</button>
+</div>
+
+<!-- 选项弹窗 -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeOverlay()">
+    <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-head">
+            <span class="sheet-title" id="sheetTitle">选项</span>
+            <button class="sheet-close" onclick="closeOverlay()">×</button>
+        </div>
+        <div class="sheet-body" id="sheetBody"></div>
+        <div class="sheet-foot">
+            <button class="btn-cancel" onclick="closeOverlay()">取消</button>
+            <button class="btn-ok" onclick="confirmSheet()">确认</button>
+        </div>
+    </div>
+</div>
+
+<script>
+var state = {
+    year: '2023',
+    province: null, provinceName: null,
+    city: null, cityName: null,
+    county: null, countyName: null,
+    town: null, townName: null,
+    village: null, villageName: null,
+    currentView: 'province',
+    villageMode: 'point_plus_xiang'
+};
+
+var provinces = [
+    '北京市','天津市','河北省','山西省','内蒙古自治区',
+    '辽宁省','吉林省','黑龙江省',
+    '上海市','江苏省','浙江省','安徽省','福建省','江西省','山东省',
+    '河南省','湖北省','湖南省',
+    '广东省','广西壮族自治区','海南省',
+    '重庆市','四川省','贵州省','云南省','西藏自治区',
+    '陕西省','甘肃省','青海省','宁夏回族自治区','新疆维吾尔自治区'
+];
+var provinceCodes = {
+    '北京市':'110000','天津市':'120000','河北省':'130000','山西省':'140000','内蒙古自治区':'150000',
+    '辽宁省':'210000','吉林省':'220000','黑龙江省':'230000',
+    '上海市':'310000','江苏省':'320000','浙江省':'330000','安徽省':'340000','福建省':'350000',
+    '江西省':'360000','山东省':'370000',
+    '河南省':'410000','湖北省':'420000','湖南省':'430000',
+    '广东省':'440000','广西壮族自治区':'450000','海南省':'460000',
+    '重庆市':'500000','四川省':'510000','贵州省':'520000','云南省':'530000','西藏自治区':'540000',
+    '陕西省':'610000','甘肃省':'620000','青海省':'630000','宁夏回族自治区':'640000','新疆维吾尔自治区':'650000'
+};
+var levelIcons = { province:'🏛', city:'🏙', county:'🏘', town:'🏡', village:'🏠' };
+var order = ['province','city','county','town','village'];
+
+function $(id) { return document.getElementById(id); }
+
+function renderSteps() {
+    var steps = $('steps').querySelectorAll('.step');
+    for (var i = 0; i < steps.length; i++) {
+        var s = steps[i];
+        var lv = s.getAttribute('data-level');
+        s.classList.remove('active', 'done');
+        if (state[lv]) s.classList.add('done');
+        if (state.currentView === lv) s.classList.add('active');
+    }
+}
+
+function renderCrumbs() {
+    var parts = [];
+    if (state.provinceName) parts.push({name: state.provinceName, level: 'province'});
+    if (state.cityName) parts.push({name: state.cityName, level: 'city'});
+    if (state.countyName) parts.push({name: state.countyName, level: 'county'});
+    if (state.townName) parts.push({name: state.townName, level: 'town'});
+    if (state.villageName) parts.push({name: state.villageName, level: 'village'});
+
+    if (parts.length === 0) {
+        $('crumbs').innerHTML = '<span class="crumb">请从下方选省开始</span>';
+        return;
+    }
+    parts[parts.length - 1].active = true;
+    var html = '';
+    for (var i = 0; i < parts.length; i++) {
+        var p = parts[i];
+        var sep = i < parts.length - 1 ? '<span class="crumb-sep">›</span>' : '';
+        var cls = p.active ? 'crumb-active' : 'crumb-tap';
+        html += '<span class="crumb ' + cls + '" onclick="goTo(\'' + p.level + '\')">' + p.name + '</span>' + sep;
+    }
+    $('crumbs').innerHTML = html;
+}
+
+function renderSectionHead() {
+    var titles = {
+        province: '① 选择省份',
+        city: '② 选择地级市',
+        county: '③ 选择县 / 区',
+        town: '④ 选择乡镇 / 街道',
+        village: '⑤ 选择村 / 社区'
+    };
+    $('sectionTitle').textContent = titles[state.currentView] || '';
+    $('sectionHint').textContent = state[state.currentView] ? '✓ 已选' : '';
+}
+
+function loadAndRender(level) {
+    var list = $('list');
+    list.innerHTML = '<div class="loading"><div class="loading-text">加载中...</div></div>';
+
+    var promise = Promise.resolve();
+    if (level === 'province') {
+        promise = Promise.resolve(provinces.map(function (n) {
+            return {name: n, code: provinceCodes[n], sub: '直辖市 / 省 / 自治区'};
+        }));
+    } else if (level === 'city') {
+        if (!state.provinceName) {
+            list.innerHTML = emptyHtml('请先选省', '回到选省', 'province');
+            return;
+        }
+        if (['北京市','天津市','上海市','重庆市'].indexOf(state.provinceName) !== -1) {
+            list.innerHTML = emptyHtml('直辖市没有地级市', '直接选区县', 'county');
+            return;
+        }
+        promise = fetchJSON('/api/tree/cities?year=' + state.year + '&province=' + encodeURIComponent(state.provinceName))
+            .then(function (d) {
+                return (d.data || []).map(function (o) {
+                    return {name: o.name, code: o.code, sub: '地级市'};
+                });
+            });
+    } else if (level === 'county') {
+        if (!state.provinceName) {
+            list.innerHTML = emptyHtml('请先选省', '回到选省', 'province');
+            return;
+        }
+        promise = fetchJSON('/api/tree/counties?year=' + state.year + '&province=' + encodeURIComponent(state.provinceName) + '&city=' + encodeURIComponent(state.cityName || ''))
+            .then(function (d) {
+                return (d.data || []).map(function (o) {
+                    return {name: o.name, code: o.code, sub: '县 / 区'};
+                });
+            });
+    } else if (level === 'town') {
+        if (!state.countyName) {
+            list.innerHTML = emptyHtml('请先选县', '回到选县', 'county');
+            return;
+        }
+        promise = fetchJSON('/api/tree/towns?year=' + state.year + '&province=' + encodeURIComponent(state.provinceName) + '&city=' + encodeURIComponent(state.cityName || '') + '&county=' + encodeURIComponent(state.countyName))
+            .then(function (d) {
+                return (d.data || []).map(function (o) {
+                    return {name: o.name, code: o.code, sub: '乡镇 / 街道'};
+                });
+            });
+    } else if (level === 'village') {
+        if (!state.townName) {
+            list.innerHTML = emptyHtml('请先选乡镇', '回到选乡镇', 'town');
+            return;
+        }
+        promise = fetchJSON('/api/tree/villages?year=' + state.year + '&province=' + encodeURIComponent(state.provinceName) + '&city=' + encodeURIComponent(state.cityName || '') + '&county=' + encodeURIComponent(state.countyName) + '&town=' + encodeURIComponent(state.townName))
+            .then(function (d) {
+                return (d.data || []).map(function (o) {
+                    return {name: o.name, code: o.code, sub: '村 / 社区'};
+                });
+            });
+    }
+
+    promise.then(function (options) {
+        if (!options || options.length === 0) {
+            list.innerHTML = emptyHtml('该层级暂无数据', '返回上一层', order[Math.max(0, order.indexOf(level) - 1)]);
+            return;
+        }
+        var currentCode = state[level];
+        var html = '';
+        for (var i = 0; i < options.length; i++) {
+            var opt = options[i];
+            var isSel = currentCode === opt.code;
+            var rightIcon = isSel
+                ? '<span class="check-mark">✓</span>'
+                : '<span class="list-item-arrow">›</span>';
+            var nameAttr = String(opt.name).replace(/'/g, '&#39;');
+            html += '<div class="list-item' + (isSel ? ' selected' : '') + '" onclick="selectLevel(\'' + level + '\', \'' + nameAttr + '\', \'' + opt.code + '\')">'
+                + '<div class="list-item-icon">' + levelIcons[level] + '</div>'
+                + '<div class="list-item-text">'
+                +   '<div class="list-item-title">' + opt.name + '</div>'
+                +   '<div class="list-item-sub">' + (opt.sub || '') + '</div>'
+                + '</div>'
+                + rightIcon
+                + '</div>';
+        }
+        list.innerHTML = html;
+    }).catch(function (e) {
+        list.innerHTML = emptyHtml('加载失败', '重试', level, true);
+    });
+}
+
+function emptyHtml(text, actionText, targetLevel, retry) {
+    var fn = retry ? 'loadAndRender' : 'goTo';
+    return '<div class="empty">'
+        + '<div class="empty-icon">' + (retry ? '⚠' : '👆') + '</div>'
+        + '<div class="empty-text">' + text + '</div>'
+        + '<div class="empty-action" onclick="' + fn + '(\'' + targetLevel + '\')">' + actionText + '</div>'
+        + '</div>';
+}
+
+function fetchJSON(url) {
+    return fetch(url).then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+    });
+}
+
+function goTo(level) {
+    var needPrev = { city: 'province', county: 'city', town: 'county', village: 'town' }[level];
+    // 直辖市跳过市级：允许 county 不需要 city
+    if (needPrev === 'city' && level === 'county' && state.provinceName) {
+        var pn = state.provinceName;
+        if (pn === '北京市' || pn === '天津市' || pn === '上海市' || pn === '重庆市') {
+            needPrev = null;
+        }
+    }
+    if (needPrev && !state[needPrev]) {
+        // 自动回退到最远能跳的层级
+        var fallback = 'province';
+        for (var i = 0; i < order.length; i++) {
+            if (state[order[i]]) fallback = order[i];
+            else break;
+        }
+        level = fallback;
+    }
+    state.currentView = level;
+    renderSteps();
+    renderCrumbs();
+    renderSectionHead();
+    loadAndRender(level);
+}
+
+function selectLevel(level, name, code) {
+    state[level] = code;
+    state[level + 'Name'] = name;
+    var idx = order.indexOf(level);
+    for (var i = idx + 1; i < order.length; i++) {
+        var c = order[i];
+        state[c] = null;
+        state[c + 'Name'] = null;
+    }
+    // 直辖市自动填市辖区（API 要求 city 参数非空）
+    if (level === 'province') {
+        var pn2 = state.provinceName;
+        if (pn2 === '北京市' || pn2 === '天津市' || pn2 === '上海市' || pn2 === '重庆市') {
+            state.city = state.province.substring(0, 2) + '0100';
+            state.cityName = '市辖区';
+        }
+    }
+    // 通知父页面（用 try-catch 防止 cross-origin 错误）
+    var levelMap = { province: 'sheng', city: 'shi', county: 'xian', town: 'xiang', village: 'cun' };
+    try { window.parent.postMessage({type:'updateMapByCode', code: code, name: name, level: levelMap[level]}, '*'); } catch(e) {}
+    // 自动进入下一步（直辖市跳过市级）
+    var next = order[idx + 1];
+    if (next === 'city' && level === 'province') {
+        var pn = state.provinceName;
+        if (pn === '北京市' || pn === '天津市' || pn === '上海市' || pn === '重庆市') {
+            next = 'county';
+        }
+    }
+    if (next) {
+        goTo(next);
+    } else {
+        renderSteps();
+        renderCrumbs();
+        renderSectionHead();
+        loadAndRender(level);
+    }
+}
+
+function resetAll() {
+    for (var i = 0; i < order.length; i++) {
+        var lv = order[i];
+        state[lv] = null;
+        state[lv + 'Name'] = null;
+    }
+    state.currentView = 'province';
+    renderSteps();
+    renderCrumbs();
+    renderSectionHead();
+    loadAndRender('province');
+    try { window.parent.postMessage({type: 'resetMap'}, '*'); } catch(e) {}
+}
+
+function lastSelected() {
+    for (var i = order.length - 1; i >= 0; i--) {
+        if (state[order[i]]) return order[i];
+    }
+    return null;
+}
+
+function viewMap() {
+    var lv = lastSelected();
+    if (!lv) { alert('请先选择一个区域'); return; }
+    var code = state[lv], name = state[lv + 'Name'];
+    try { window.parent.postMessage({type: 'updateMapByCode', code: code, name: name, level: 'current'}, '*'); } catch(e) {}
+}
+
+function downloadBatch() {
+    var lv = lastSelected();
+    if (!lv) { alert('请先选择一个区域'); return; }
+    var code = state[lv];
+    var year = state.year;
+    var url;
+    if (lv === 'village') {
+        url = '/downloadVillageBatch/village/' + code + '?format=shp&year=' + year + '&village=' + state.villageMode;
+    } else if (lv === 'town') {
+        url = '/downloadTownBatch/town/' + code + '?format=shp&year=' + year + '&village=' + state.villageMode;
+    } else if (lv === 'county') {
+        url = '/downloadCountyBatch/county/' + code + '?format=shp&year=' + year + '&village=' + state.villageMode;
+    } else if (lv === 'city') {
+        url = '/downloadCityBatch/city/' + code + '?format=shp&year=' + year + '&village=' + state.villageMode;
+    } else {
+        url = '/downloadVector/' + code + '?format=shp&year=' + year;
+    }
+    window.location.href = url;
+}
+
+// ========== 选项弹窗 ==========
+var villageOptions = [
+    { value: 'point',            title: '📍 仅村位置点',         desc: '最小包，只含该村一个点' },
+    { value: 'point_plus_xiang', title: '📍 + 🏘 村点 + 所在乡镇',  desc: '推荐：村位置 + 乡镇边界' },
+    { value: 'point_plus_xian',  title: '📍 + 🏘 + 🏙 村点 + 乡镇 + 县', desc: '完整三件套：村 + 乡镇 + 县边界' },
+    { value: 'polygon',          title: '⬛ 村级面（需数据库支持）',  desc: '未启用时自动回退到点数据' },
+    { value: 'none',             title: '🚫 不含村级',            desc: '只下载选中区域本身' }
+];
+
+var sheetOnConfirm = null;  // 当前 sheet 确认后调的函数
+var sheetPendingValue = null;  // 选项弹窗暂存值（点击选项不立即应用）
+
+function openVillageOptions() {
+    var html = '';
+    for (var i = 0; i < villageOptions.length; i++) {
+        var o = villageOptions[i];
+        var sel = state.villageMode === o.value ? ' selected' : '';
+        html += '<div class="list-item' + sel + '" data-v="' + o.value + '" onclick="pickVillageMode(\'' + o.value + '\')">'
+            + '<div class="list-item-icon">' + (sel ? '✓' : '⚙') + '</div>'
+            + '<div class="list-item-text">'
+            +   '<div class="list-item-title">' + o.title + '</div>'
+            +   '<div class="list-item-sub">' + o.desc + '</div>'
+            + '</div>'
+            + '</div>';
+    }
+    sheetPendingValue = state.villageMode;
+    $('sheetTitle').textContent = '下载内容';
+    $('sheetBody').innerHTML = html;
+    $('overlay').classList.add('show');
+}
+
+function closeOverlay() {
+    $('overlay').classList.remove('show');
+    sheetPendingValue = null;
+}
+
+function pickVillageMode(v) {
+    // 暂存选中值，不立即应用，等用户点"确认"
+    sheetPendingValue = v;
+    var items = document.querySelectorAll('.sheet-body .list-item');
+    for (var i = 0; i < items.length; i++) {
+        var sel = items[i].getAttribute('data-v') === v;
+        items[i].classList.toggle('selected', sel);
+        items[i].querySelector('.list-item-icon').textContent = sel ? '✓' : '⚙';
+    }
+}
+
+function confirmSheet() {
+    if (sheetPendingValue !== null) {
+        state.villageMode = sheetPendingValue;
+    }
+    closeOverlay();
+}
+
+// 启动
+goTo('province');
+
+// 全局错误显示（调试用）—— 任何 JS 错误都会在屏幕顶部显示一个红条
+window.addEventListener('error', function(e) {
+    var bar = document.createElement('div');
+    bar.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#e53e3e;color:#fff;padding:8px 12px;font-size:13px;z-index:9999;font-family:monospace;word-break:break-all;';
+    bar.textContent = '⚠ JS错误: ' + (e.message || e) + ' @ ' + (e.filename || '') + ':' + (e.lineno || '');
+    document.body.appendChild(bar);
+    setTimeout(function() { try { document.body.removeChild(bar); } catch(x) {} }, 8000);
+});
+window.addEventListener('unhandledrejection', function(e) {
+    var bar = document.createElement('div');
+    bar.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#dd6b20;color:#fff;padding:8px 12px;font-size:13px;z-index:9999;font-family:monospace;word-break:break-all;';
+    bar.textContent = '⚠ 网络错误: ' + (e.reason && e.reason.message ? e.reason.message : e.reason);
+    document.body.appendChild(bar);
+    setTimeout(function() { try { document.body.removeChild(bar); } catch(x) {} }, 8000);
+});
+</script>
+</body>
+</html>

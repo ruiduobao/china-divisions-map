@@ -46,7 +46,7 @@
     <div class="container">
         <h1 >数据使用说明</h1>
         <p>感谢您使用我们的数据服务。为了确保数据的正确使用，我们提供以下使用说明和免责声明，请仔细阅读。</p>
-        
+
         <h3>1. 数据来源和时效性</h3>
         <p>（1）五级行政区划的上下级关系来源于统计局发布的各个年份对应的统计用区划代码和城乡划分代码。您可以通过以下官方地址获取更多信息：<a href="http://www.stats.gov.cn/sj/tjbz/tjyqhdmhcxhfdm/2023/index.html" target="_blank">国家统计局</a>。</p>
         <p>（2）省市县行政区划数据来源于网站shengshixian.com，该数据是一套长时间序列中国行政区划数据，以1:100万公开基础地理信息为基础，参考多种中国矢量数据，将行政区划和民政部官方区划进行逐一对照制作而来。官方地址：<a href="https://www.shengshixian.com/" target="_blank">shengshixian.com</a>。</p>
@@ -63,8 +63,22 @@
         </ul>
         <p>使用这些数据意味着您已经阅读并接受了以上条款。所有使用数据产生的责任和后果将完全由您自己承担。我们保留随时修改或更新这些使用规范的权利，而无需提前通知。</p>
         <h3>3. 数据来源</h3>
-        <p>本网站提供的省市县行政区划数据来源于“省市县数据CTAmap”</p>
+        <p>本网站提供的省市县行政区划数据来源于"省市县数据CTAmap"</p>
         <p>更多详细信息和数据下载，请访问：<a href="https://www.shengshixian.com/" target="_blank">省市县数据CTAmap</a>。</p>
+
+        <h3>4. API 接口</h3>
+        <p>本网站提供免费的行政区划数据查询和下载API接口，供开发者使用。</p>
+        <p>支持的功能：</p>
+        <ul>
+            <li>行政区划层级查询（省→市→县→乡→村）</li>
+            <li>矢量数据获取（GeoJSON、Shapefile、KML等格式）</li>
+            <li>行政区划搜索</li>
+            <li>统计数据查询</li>
+        </ul>
+        <p style="margin-top: 12px;">
+            <a href="/others/API文档.html" style="display: inline-block; padding: 10px 20px; background: #2c5282; color: white; border-radius: 4px; text-decoration: none; font-weight: 500;">📄 查看完整API文档</a>
+        </p>
+        <p style="font-size: 0.9em; color: #666; margin-top: 8px;">API示例：GET /api/tree/cities?year=2023&province=四川省</p>
 
         <div class="footer">
             <p>© 2023 数据使用说明</p>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 接口文档 - map.ruiduobao.com</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.7;
+            color: #333;
+            background: #f8fafc;
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        h1 { color: #1a365d; border-bottom: 3px solid #ed8936; padding-bottom: 12px; margin-bottom: 24px; }
+        h2 { color: #2c5282; margin: 32px 0 16px; font-size: 20px; display: flex; align-items: center; gap: 8px; }
+        h2::before { content: ''; display: inline-block; width: 4px; height: 20px; background: #ed8936; border-radius: 2px; }
+        h3 { color: #4a5568; margin: 20px 0 10px; font-size: 16px; }
+        p { margin: 12px 0; color: #4a5568; }
+        code { background: #edf2f7; padding: 2px 8px; border-radius: 4px; font-family: 'Fira Code', 'Consolas', monospace; font-size: 13px; color: #d53f8c; }
+        pre { background: #1a202c; color: #e2e8f0; padding: 16px; border-radius: 6px; overflow-x: auto; margin: 16px 0; font-size: 13px; }
+        pre code { background: none; padding: 0; color: inherit; }
+        .endpoint { background: #ebf8ff; border-left: 4px solid #3182ce; padding: 16px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+        .method { display: inline-block; padding: 4px 10px; border-radius: 4px; font-weight: 600; font-size: 12px; margin-right: 8px; }
+        .get { background: #48bb78; color: white; }
+        .post { background: #4299e1; color: white; }
+        .param-table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 14px; }
+        .param-table th, .param-table td { border: 1px solid #e2e8f0; padding: 10px 12px; text-align: left; }
+        .param-table th { background: #f7fafc; font-weight: 600; }
+        .note { background: #fffaf0; border: 1px solid #fbd38d; padding: 12px 16px; border-radius: 6px; margin: 16px 0; }
+        .note-title { font-weight: 600; color: #c05621; }
+        
+        /* 测试区域 */
+        .test-section { background: white; border-radius: 8px; padding: 20px; margin: 20px 0; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .test-row { display: flex; gap: 12px; margin: 12px 0; flex-wrap: wrap; align-items: center; }
+        .test-row label { min-width: 100px; font-weight: 500; }
+        .test-row input, .test-row select { padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; }
+        .test-row input { flex: 1; min-width: 150px; }
+        .test-btn { padding: 10px 24px; background: #3182ce; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; transition: background 0.2s; }
+        .test-btn:hover { background: #2c5282; }
+        .test-btn:disabled { background: #a0aec0; cursor: not-allowed; }
+        .test-result { margin-top: 16px; }
+        .test-result pre { max-height: 400px; overflow: auto; }
+        .status-success { color: #38a169; font-weight: 600; }
+        .status-error { color: #e53e3e; font-weight: 600; }
+        
+        .tabs { display: flex; border-bottom: 2px solid #e2e8f0; margin-bottom: 20px; }
+        .tab { padding: 12px 24px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
+        .tab:hover { color: #3182ce; }
+        .tab.active { color: #3182ce; border-bottom-color: #3182ce; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        
+        .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; text-align: center; color: #718096; font-size: 13px; }
+        
+        @media (max-width: 768px) {
+            .test-row { flex-direction: column; align-items: stretch; }
+            .test-row label { margin-bottom: 4px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📡 API 接口文档</h1>
+        <p>本文档描述 map.ruiduobao.com 提供的免费公开 API 接口，供开发者查询和下载中国五级行政区划数据。</p>
+        
+        <div class="note">
+            <div class="note-title">⚠️ 免费使用声明</div>
+            <p>本API完全免费，供学术研究、教育学习等非商业用途使用。请勿用于商业目的或违法活动。使用本API即表示您同意遵守相关使用规范。</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" onclick="switchTab('doc')">📖 接口文档</div>
+            <div class="tab" onclick="switchTab('test')">🧪 在线测试</div>
+        </div>
+
+        <!-- 接口文档 -->
+        <div id="tab-doc" class="tab-content active">
+            <h2>🌐 基础信息</h2>
+            <p><strong>Base URL:</strong> <code>https://map.ruiduobao.com</code></p>
+            <p><strong>数据格式:</strong> JSON / GeoJSON</p>
+            <p><strong>编码:</strong> UTF-8</p>
+
+            <h2>📍 行政区划查询接口</h2>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/tree/cities</code>
+                <p>获取指定省份的地级市列表</p>
+            </div>
+            <table class="param-table">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>year</td><td>string</td><td>否</td><td>年份，可选值：2023, 2021, 2018, 2017, 2010，默认2023</td></tr>
+                <tr><td>province</td><td>string</td><td>是</td><td>省份名称，如：四川省</td></tr>
+            </table>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/tree/counties</code>
+                <p>获取指定地级市的县级区划列表</p>
+            </div>
+            <table class="param-table">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>year</td><td>string</td><td>否</td><td>年份，默认2023</td></tr>
+                <tr><td>province</td><td>string</td><td>是</td><td>省份名称</td></tr>
+                <tr><td>city</td><td>string</td><td>是</td><td>地级市名称</td></tr>
+            </table>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/tree/towns</code>
+                <p>获取指定县的乡镇列表</p>
+            </div>
+            <table class="param-table">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>year</td><td>string</td><td>否</td><td>年份，默认2023</td></tr>
+                <tr><td>province</td><td>string</td><td>是</td><td>省份名称</td></tr>
+                <tr><td>city</td><td>string</td><td>是</td><td>地级市名称</td></tr>
+                <tr><td>county</td><td>string</td><td>是</td><td>县/区名称</td></tr>
+            </table>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/tree/villages</code>
+                <p>获取指定乡镇的村级列表</p>
+            </div>
+            <table class="param-table">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>year</td><td>string</td><td>否</td><td>年份，默认2023</td></tr>
+                <tr><td>province</td><td>string</td><td>是</td><td>省份名称</td></tr>
+                <tr><td>city</td><td>string</td><td>是</td><td>地级市名称</td></tr>
+                <tr><td>county</td><td>string</td><td>是</td><td>县/区名称</td></tr>
+                <tr><td>town</td><td>string</td><td>是</td><td>乡镇名称</td></tr>
+            </table>
+
+            <h2>🗺️ 矢量数据获取接口</h2>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/getGsonDB</code>
+                <p>根据行政区划编码获取矢量数据（GeoJSON格式）</p>
+            </div>
+            <table class="param-table">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>code</td><td>string</td><td>是</td><td>行政区划编码</td></tr>
+                <tr><td>year</td><td>int</td><td>否</td><td>年份，默认2023（仅省/市/县级有效）</td></tr>
+            </table>
+            <h3>编码规则</h3>
+            <table class="param-table">
+                <tr><th>编码格式</th><th>级别</th><th>示例</th></tr>
+                <tr><td>6位，后4位为0000</td><td>省级</td><td>510000（四川省）</td></tr>
+                <tr><td>6位，后2位为00</td><td>地级</td><td>510100（成都市）</td></tr>
+                <tr><td>6位，后2位不为00</td><td>县级</td><td>510104（锦江区）</td></tr>
+                <tr><td>12位，后3位为000</td><td>乡镇级</td><td>510104017000</td></tr>
+                <tr><td>12位</td><td>村级</td><td>510104017001</td></tr>
+            </table>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/downloadVector/:code</code>
+                <p>下载矢量数据（支持多种格式）</p>
+            </div>
+            <table class="param-table">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>code</td><td>string</td><td>是</td><td>行政区划编码（URL路径参数）</td></tr>
+                <tr><td>format</td><td>string</td><td>否</td><td>格式：gson(GeoJSON), shp(Shapefile), kml, gpkg(GeoPackage), svg，默认gson</td></tr>
+                <tr><td>year</td><td>int</td><td>否</td><td>年份，默认2023</td></tr>
+            </table>
+
+            <h2>🔍 搜索接口</h2>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/search</code>
+                <p>搜索行政区划（流式返回SSE）</p>
+            </div>
+            <table class="param-table">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>keyword</td><td>string</td><td>是</td><td>搜索关键词（名称或编码）</td></tr>
+                <tr><td>province</td><td>string</td><td>否</td><td>当前省份，优先搜索省内</td></tr>
+                <tr><td>limit</td><td>int</td><td>否</td><td>返回数量限制，默认10</td></tr>
+            </table>
+            
+            <h3>返回格式（Server-Sent Events）</h3>
+            <pre><code>data: {"type":"result","data":{"name":"锦江区","code":"510104","level":"xian"},"scope":"province"}
+data: {"type":"provinceDone","hasResults":true}
+data: {"type":"result","data":{"name":"锦江社区居委会","code":"..."},"scope":"nationwide"}
+data: {"type":"done","total":5}</code></pre>
+
+            <h2>📊 统计数据接口</h2>
+
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/api/statistics</code>
+                <p>获取行政区划统计数据</p>
+            </div>
+            <table class="param-table">
+                <tr><th>参数</th><th>类型</th><th>必填</th><th>说明</th></tr>
+                <tr><td>year</td><td>int</td><td>否</td><td>年份，默认2023</td></tr>
+            </table>
+
+            <h2>💡 使用示例</h2>
+
+            <h3>JavaScript (Fetch API)</h3>
+            <pre><code>// 获取四川省的矢量数据
+fetch('https://map.ruiduobao.com/getGsonDB?code=510000&year=2023')
+  .then(res => res.json())
+  .then(data => {
+    if (data.status === 'success') {
+      // 获取GeoJSON文件
+      fetch('https://map.ruiduobao.com' + data.filepath)
+        .then(res => res.json())
+        .then(geojson => {
+          console.log('GeoJSON数据:', geojson);
+        });
+    }
+  });</code></pre>
+
+            <h3>Python (requests)</h3>
+            <pre><code>import requests
+
+# 获取四川省矢量数据
+response = requests.get('https://map.ruiduobao.com/getGsonDB', params={
+    'code': '510000',
+    'year': 2023
+})
+data = response.json()
+
+if data['status'] == 'success':
+    # 下载GeoJSON
+    geojson_url = 'https://map.ruiduobao.com' + data['filepath']
+    geojson = requests.get(geojson_url).json()
+    print(f"获取到 {len(geojson['features'])} 个要素")</code></pre>
+
+            <h2>⚠️ 注意事项</h2>
+            <div class="note">
+                <p>1. 本API完全免费，但请合理使用，避免频繁请求造成服务器压力</p>
+                <p>2. 省级、市级、县级数据支持多年份（2000-2026年），乡镇、村级数据约为2020年</p>
+                <p>3. 部分村级数据可能只有点数据，没有面边界</p>
+                <p>4. 数据仅供参考，不保证完全准确，使用者需自行核实</p>
+                <p>5. 如有问题或建议，请联系邮箱：caaschengrui@163.com</p>
+            </div>
+
+            <h2>📋 错误码说明</h2>
+            <table class="param-table">
+                <tr><th>状态</th><th>说明</th></tr>
+                <tr><td><code>success</code></td><td>请求成功</td></tr>
+                <tr><td><code>error</code></td><td>请求失败，查看 message 字段</td></tr>
+                <tr><td>HTTP 400</td><td>参数错误（缺少必填参数）</td></tr>
+                <tr><td>HTTP 404</td><td>数据不存在</td></tr>
+                <tr><td>HTTP 500</td><td>服务器内部错误</td></tr>
+            </table>
+
+            <h3>常见错误示例</h3>
+            <pre><code>// 缺少必填参数
+GET /api/tree/cities
+响应: {"status":"error","message":"需要省份参数"}
+
+// 编码不存在
+GET /getGsonDB?code=999999
+响应: Data not found (HTTP 404)
+
+// 年份不可用
+GET /getGsonDB?code=510000&year=2030
+响应: {"status":"error","message":"年份2030数据不可用"}</code></pre>
+        </div>
+
+        <!-- 在线测试 -->
+        <div id="tab-test" class="tab-content">
+            <h2>🧪 在线测试工具</h2>
+            
+            <!-- 测试1: 获取地级市列表 -->
+            <div class="test-section">
+                <h3>1. 获取地级市列表 <code>/api/tree/cities</code></h3>
+                <div class="test-row">
+                    <label>省份:</label>
+                    <input type="text" id="test1-province" value="四川省" placeholder="如：四川省">
+                    <label>年份:</label>
+                    <select id="test1-year">
+                        <option value="2023">2023</option>
+                        <option value="2021">2021</option>
+                        <option value="2018">2018</option>
+                    </select>
+                    <button class="test-btn" onclick="testCities()">测试</button>
+                </div>
+                <div class="test-result" id="test1-result"></div>
+            </div>
+
+            <!-- 测试2: 获取矢量数据 -->
+            <div class="test-section">
+                <h3>2. 获取矢量数据 <code>/getGsonDB</code></h3>
+                <div class="test-row">
+                    <label>编码:</label>
+                    <input type="text" id="test2-code" value="510104" placeholder="如：510104（锦江区）">
+                    <label>年份:</label>
+                    <select id="test2-year">
+                        <option value="2023">2023</option>
+                        <option value="2021">2021</option>
+                        <option value="2018">2018</option>
+                    </select>
+                    <button class="test-btn" onclick="testVector()">测试</button>
+                </div>
+                <div class="test-result" id="test2-result"></div>
+            </div>
+
+            <!-- 测试3: 搜索 -->
+            <div class="test-section">
+                <h3>3. 搜索行政区划 <code>/search</code></h3>
+                <div class="test-row">
+                    <label>关键词:</label>
+                    <input type="text" id="test3-keyword" value="锦江" placeholder="如：锦江">
+                    <label>省份:</label>
+                    <input type="text" id="test3-province" value="四川省" placeholder="可选，优先搜索省内">
+                    <button class="test-btn" onclick="testSearch()">测试</button>
+                </div>
+                <div class="test-result" id="test3-result"></div>
+            </div>
+
+            <!-- 测试4: 统计数据 -->
+            <div class="test-section">
+                <h3>4. 统计数据 <code>/api/statistics</code></h3>
+                <div class="test-row">
+                    <label>年份:</label>
+                    <select id="test4-year">
+                        <option value="2023">2023</option>
+                        <option value="2021">2021</option>
+                        <option value="2018">2018</option>
+                    </select>
+                    <button class="test-btn" onclick="testStatistics()">测试</button>
+                </div>
+                <div class="test-result" id="test4-result"></div>
+            </div>
+
+            <!-- 测试5: 下载矢量 -->
+            <div class="test-section">
+                <h3>5. 下载矢量数据 <code>/downloadVector/:code</code></h3>
+                <div class="test-row">
+                    <label>编码:</label>
+                    <input type="text" id="test5-code" value="510104" placeholder="如：510104">
+                    <label>格式:</label>
+                    <select id="test5-format">
+                        <option value="gson">GeoJSON</option>
+                        <option value="shp">Shapefile</option>
+                        <option value="kml">KML</option>
+                        <option value="gpkg">GeoPackage</option>
+                    </select>
+                    <button class="test-btn" onclick="testDownload()">下载</button>
+                </div>
+                <div class="test-result" id="test5-result"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div style="margin-bottom: 20px;">
+                <p style="font-size: 16px; font-weight: 600; color: #2d3748; margin-bottom: 10px;">关注微信公众号「锐多宝」</p>
+                <p style="color: #718096; font-size: 13px; margin-bottom: 12px;">获取更多行政区划数据、GIS教程和更新资讯</p>
+                <img src="/pics/gongzhonghao.jpg" alt="锐多宝公众号二维码" style="width: 200px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            </div>
+            <p style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #e2e8f0;">© 2026 map.ruiduobao.com | 邮箱：caaschengrui@163.com</p>
+        </div>
+    </div>
+
+    <script>
+        const BASE_URL = 'https://map.ruiduobao.com';
+        
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('tab-' + tabId).classList.add('active');
+        }
+        
+        function showResult(elementId, data, isError = false) {
+            const el = document.getElementById(elementId);
+            const statusClass = isError ? 'status-error' : 'status-success';
+            const statusText = isError ? '❌ 错误' : '✅ 成功';
+            el.innerHTML = `
+                <p class="${statusClass}">${statusText}</p>
+                <pre><code>${JSON.stringify(data, null, 2)}</code></pre>
+            `;
+        }
+        
+        function showLoading(elementId) {
+            document.getElementById(elementId).innerHTML = '<p>⏳ 加载中...</p>';
+        }
+        
+        async function testCities() {
+            const province = document.getElementById('test1-province').value;
+            const year = document.getElementById('test1-year').value;
+            showLoading('test1-result');
+            
+            try {
+                const res = await fetch(`${BASE_URL}/api/tree/cities?year=${year}&province=${encodeURIComponent(province)}`);
+                const data = await res.json();
+                showResult('test1-result', data, data.status === 'error');
+            } catch (err) {
+                showResult('test1-result', { error: err.message }, true);
+            }
+        }
+        
+        async function testVector() {
+            const code = document.getElementById('test2-code').value;
+            const year = document.getElementById('test2-year').value;
+            showLoading('test2-result');
+            
+            try {
+                const res = await fetch(`${BASE_URL}/getGsonDB?code=${code}&year=${year}`);
+                const data = await res.json();
+                showResult('test2-result', data, data.status === 'error' || res.status >= 400);
+            } catch (err) {
+                showResult('test2-result', { error: err.message }, true);
+            }
+        }
+        
+        async function testSearch() {
+            const keyword = document.getElementById('test3-keyword').value;
+            const province = document.getElementById('test3-province').value;
+            showLoading('test3-result');
+            
+            try {
+                const results = [];
+                const res = await fetch(`${BASE_URL}/search?keyword=${encodeURIComponent(keyword)}&province=${encodeURIComponent(province)}&limit=10`);
+                const reader = res.body.getReader();
+                const decoder = new TextDecoder();
+                
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    const text = decoder.decode(value);
+                    const lines = text.split('\n');
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.substring(6));
+                                if (data.type === 'result') {
+                                    results.push(data.data);
+                                }
+                            } catch (e) {}
+                        }
+                    }
+                }
+                
+                showResult('test3-result', { total: results.length, results: results.slice(0, 10) }, false);
+            } catch (err) {
+                showResult('test3-result', { error: err.message }, true);
+            }
+        }
+        
+        async function testStatistics() {
+            const year = document.getElementById('test4-year').value;
+            showLoading('test4-result');
+            
+            try {
+                const res = await fetch(`${BASE_URL}/api/statistics?year=${year}`);
+                const data = await res.json();
+                showResult('test4-result', data, data.status === 'error');
+            } catch (err) {
+                showResult('test4-result', { error: err.message }, true);
+            }
+        }
+        
+        function testDownload() {
+            const code = document.getElementById('test5-code').value;
+            const format = document.getElementById('test5-format').value;
+            const year = '2023';
+            
+            const url = `${BASE_URL}/downloadVector/${code}?format=${format}&year=${year}`;
+            document.getElementById('test5-result').innerHTML = `
+                <p class="status-success">⬇️ 开始下载...</p>
+                <p>下载链接: <a href="${url}" target="_blank">${url}</a></p>
+            `;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>

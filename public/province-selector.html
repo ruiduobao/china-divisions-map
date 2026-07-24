@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择省份</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Source Sans Pro', -apple-system, sans-serif;
+            background: #f7fafc;
+            padding: 12px;
+            font-size: 14px;
+            color: #2d3748;
+        }
+        .header {
+            background: #fff;
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+        }
+        .header-title {
+            font-size: 13px;
+            color: #2c5282;
+            margin-bottom: 10px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        .year-tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .year-tab {
+            padding: 5px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #fff;
+            font-size: 13px;
+            color: #4a5568;
+            transition: all 0.15s;
+        }
+        .year-tab:hover {
+            border-color: #4299e1;
+            color: #2c5282;
+        }
+        .year-tab.active {
+            background: #2c5282;
+            color: white;
+            border-color: #2c5282;
+        }
+        .province-container {
+            background: #fff;
+            border-radius: 6px;
+            padding: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            border: 1px solid #e2e8f0;
+        }
+        .section-title {
+            font-size: 12px;
+            color: #718096;
+            margin: 10px 0 8px 0;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .section-title:first-child {
+            margin-top: 0;
+        }
+        .province-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 6px;
+        }
+        .province-item {
+            padding: 8px 10px;
+            background: #f7fafc;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s;
+            border: 1px solid transparent;
+        }
+        .province-item:hover {
+            background: #ebf8ff;
+            border-color: #4299e1;
+        }
+        .province-item.selected {
+            background: #ebf8ff;
+            border-color: #2c5282;
+        }
+        .province-item .name {
+            font-size: 13px;
+            color: #2d3748;
+        }
+        .province-item.disabled {
+            background: #f7fafc;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        .province-item.disabled:hover {
+            background: #f7fafc;
+            border-color: transparent;
+        }
+        .province-item.disabled .name {
+            color: #a0aec0;
+        }
+        .footer {
+            margin-top: 12px;
+            padding: 8px 10px;
+            background: #fffaf0;
+            border-radius: 4px;
+            font-size: 11px;
+            color: #c05621;
+            text-align: center;
+            border: 1px solid #fbd38d;
+        }
+        
+        /* 移动端优化 */
+        @media (max-width: 599px) {
+            body { padding: 10px; }
+            .province-grid {
+                grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+            }
+            .province-item {
+                padding: 10px 8px;
+            }
+            .province-item .name {
+                font-size: 12px;
+            }
+            .year-tab {
+                padding: 6px 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-title">📅 选择年份和省份</div>
+        <div class="year-tabs">
+            <div class="year-tab active" onclick="selectYear(this, '2023')">2023年</div>
+            <div class="year-tab" onclick="selectYear(this, '2021')">2021年</div>
+            <div class="year-tab" onclick="selectYear(this, '2018')">2018年</div>
+            <div class="year-tab" onclick="selectYear(this, '2017')">2017年</div>
+            <div class="year-tab" onclick="selectYear(this, '2010')">2010年</div>
+        </div>
+    </div>
+    
+    <div class="province-container">
+        <div class="section-title">华北地区</div>
+        <div class="province-grid" id="huabei"></div>
+        
+        <div class="section-title">东北地区</div>
+        <div class="province-grid" id="dongbei"></div>
+        
+        <div class="section-title">华东地区</div>
+        <div class="province-grid" id="huadong"></div>
+        
+        <div class="section-title">华中地区</div>
+        <div class="province-grid" id="huazhong"></div>
+        
+        <div class="section-title">华南地区</div>
+        <div class="province-grid" id="huanan"></div>
+        
+        <div class="section-title">西南地区</div>
+        <div class="province-grid" id="xinan"></div>
+        
+        <div class="section-title">西北地区</div>
+        <div class="province-grid" id="xibei"></div>
+        
+        <div class="section-title">港澳台</div>
+        <div class="province-grid" id="gangatai"></div>
+    </div>
+    
+    <div class="footer">
+        💡 点击省份可查看该省详细行政区划
+    </div>
+
+    <script>
+        // 静态省份数据 - 无需API加载
+        const provinces = {
+            huabei: [
+                { name: '北京市', code: '110000' },
+                { name: '天津市', code: '120000' },
+                { name: '河北省', code: '130000' },
+                { name: '山西省', code: '140000' },
+                { name: '内蒙古自治区', code: '150000' }
+            ],
+            dongbei: [
+                { name: '辽宁省', code: '210000' },
+                { name: '吉林省', code: '220000' },
+                { name: '黑龙江省', code: '230000' }
+            ],
+            huadong: [
+                { name: '上海市', code: '310000' },
+                { name: '江苏省', code: '320000' },
+                { name: '浙江省', code: '330000' },
+                { name: '安徽省', code: '340000' },
+                { name: '福建省', code: '350000' },
+                { name: '江西省', code: '360000' },
+                { name: '山东省', code: '370000' }
+            ],
+            huazhong: [
+                { name: '河南省', code: '410000' },
+                { name: '湖北省', code: '420000' },
+                { name: '湖南省', code: '430000' }
+            ],
+            huanan: [
+                { name: '广东省', code: '440000' },
+                { name: '广西壮族自治区', code: '450000' },
+                { name: '海南省', code: '460000' }
+            ],
+            xinan: [
+                { name: '重庆市', code: '500000' },
+                { name: '四川省', code: '510000' },
+                { name: '贵州省', code: '520000' },
+                { name: '云南省', code: '530000' },
+                { name: '西藏自治区', code: '540000' }
+            ],
+            xibei: [
+                { name: '陕西省', code: '610000' },
+                { name: '甘肃省', code: '620000' },
+                { name: '青海省', code: '630000' },
+                { name: '宁夏回族自治区', code: '640000' },
+                { name: '新疆维吾尔自治区', code: '650000' }
+            ],
+            gangatai: [
+                { name: '香港', code: '810000', disabled: true },
+                { name: '澳门', code: '820000', disabled: true },
+                { name: '台湾省', code: '710000', disabled: true }
+            ]
+        };
+        
+        let currentYear = '2023';
+        
+        // 初始化省份列表
+        function initProvinces() {
+            for (const [region, list] of Object.entries(provinces)) {
+                const container = document.getElementById(region);
+                if (!container) continue;
+                
+                list.forEach(p => {
+                    const div = document.createElement('div');
+                    div.className = 'province-item' + (p.disabled ? ' disabled' : '');
+                    div.innerHTML = `<span class="name">${p.name}</span>`;
+                    
+                    if (!p.disabled) {
+                        div.onclick = () => selectProvince(p.name, p.code);
+                    }
+                    
+                    container.appendChild(div);
+                });
+            }
+        }
+        
+        // 选择年份
+        function selectYear(el, year) {
+            document.querySelectorAll('.year-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            currentYear = year;
+        }
+        
+        // 选择省份 - 直接跳转，无需等待
+        function selectProvince(name, code) {
+            // 移动端：关闭左侧面板
+            if (window.innerWidth <= 599) {
+                const panel = window.parent.document.getElementById('provinceData');
+                if (panel) {
+                    panel.classList.remove('show');
+                }
+            }
+            
+            // 立即发送消息，加载树状视图
+            window.parent.postMessage({
+                type: 'updateMapByYearsheng',
+                yearsheng: name + currentYear + '年'
+            }, '*');
+        }
+        
+        // 页面加载时立即初始化
+        initProvinces();
+    </script>
+</body>
+</html>

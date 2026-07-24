@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /getGsonDB
+Disallow: /getCunAddress
+Disallow: /downloadVector
+Disallow: /checkDownloadStatus
+
+Sitemap: https://map.ruiduobao.com/sitemap.xml

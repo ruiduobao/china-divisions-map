@@ -1,29 +1,44 @@
 {
   "name": "gaode_map_cun",
-  "version": "1.0.0",
-  "main": "index.js",
+  "version": "3.7.0",
+  "description": "中国五级行政区划查询与下载系统",
+  "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "NODE_ENV=development node app.js",
+    "preload": "node scripts/preload-csv.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruiduobao/gaode_MAP_CUN.git"
+  },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ruiduobao/gaode_MAP_CUN/issues"
+  },
+  "homepage": "https://github.com/ruiduobao/gaode_MAP_CUN#readme",
   "dependencies": {
-    "@mapbox/shp-write": "^0.4.3",
-    "axios": "^1.5.1",
+    "archiver": "^7.0.1",
+    "axios": "^1.6.0",
     "body-parser": "^1.20.2",
-    "cheerio": "^1.0.0-rc.12",
+    "compression": "^1.8.1",
+    "csv-parser": "^3.2.0",
     "dbf-js": "^1.2.1",
+    "dotenv": "^16.6.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
-    "express-session": "^1.17.3",
-    "fs-extra": "^11.1.1",
-    "geojson": "^0.5.0",
+    "express-async-errors": "^3.1.1",
+    "file-saver": "^2.0.5",
     "geojson-extent": "^0.3.2",
     "geojson2svg": "^2.0.1",
-    "glob": "^10.3.10",
-    "pg": "^8.11.3",
-    "pg-promise": "^11.5.4"
-  },
-  "description": ""
+    "iconv-lite": "^0.7.2",
+    "jszip": "^3.10.1",
+    "lru-cache": "^11.2.7",
+    "pg-promise": "^11.5.4",
+    "pino": "^9.14.0",
+    "pino-pretty": "^11.3.0",
+    "redis": "^5.11.0"
+  }
 }

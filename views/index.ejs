@@ -1,26 +1,193 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Map Display</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <!-- SEO Meta Tags -->
+    <title>中国五级行政区划查询下载 - 省市县乡村矢量数据 | map.ruiduobao.com</title>
+    <meta name="description" content="免费查询下载中国五级行政区划矢量数据（2000-2026年），支持省级、市级、县级、乡镇级、村级边界，提供GeoJSON、Shapefile、KML、GeoPackage、SVG格式导出，支持行政区划编码搜索和地理位置定位。">
+    <meta name="keywords" content="行政区划,矢量数据,GeoJSON,Shapefile,KML,GeoPackage,省市区划,村级边界,乡镇边界,中国地图,GIS数据,行政区划代码,省市县乡村,行政区划下载,免费下载">
+    <meta name="author" content="锐多宝">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="googlebot" content="index, follow">
+    <meta name="revisit-after" content="7 days">
+    <link rel="canonical" href="https://map.ruiduobao.com/">
+    
+    <!-- 移动端优化 -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="行政区划查询">
+    <meta name="theme-color" content="#1a365d">
+    
+    <!-- Open Graph / 社交媒体 -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://map.ruiduobao.com/">
+    <meta property="og:title" content="中国五级行政区划查询下载平台 - 免费矢量数据">
+    <meta property="og:description" content="免费查询下载中国省市县乡村五级行政区划矢量数据，支持2000-2026年多年份历史数据和多格式导出（GeoJSON、Shapefile、KML等）。">
+    <meta property="og:image" content="https://map.ruiduobao.com/pics/preview.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="zh_CN">
+    <meta property="og:site_name" content="map.ruiduobao.com">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ruiduobao">
+    <meta name="twitter:title" content="中国五级行政区划查询下载平台">
+    <meta name="twitter:description" content="免费查询下载中国省市县乡村五级行政区划矢量数据，支持多年份历史数据和多格式导出。">
+    <meta name="twitter:image" content="https://map.ruiduobao.com/pics/preview.png">
+    
+    <!-- 结构化数据 - WebApplication -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "中国五级行政区划查询系统",
+        "url": "https://map.ruiduobao.com/",
+        "description": "免费查询下载中国五级行政区划矢量数据平台，支持省、市、县、乡镇、村五级数据查询和下载",
+        "applicationCategory": "GISApplication",
+        "operatingSystem": "Web",
+        "browserRequirements": "Requires JavaScript",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "CNY"
+        },
+        "author": {
+            "@type": "Organization",
+            "name": "锐多宝",
+            "url": "https://www.ruiduobao.com/"
+        },
+        "provider": {
+            "@type": "Organization",
+            "name": "锐多宝",
+            "url": "https://www.ruiduobao.com/"
+        },
+        "featureList": [
+            "五级行政区划查询",
+            "矢量数据下载",
+            "多年份数据支持",
+            "多格式导出",
+            "地理编码",
+            "行政区划搜索"
+        ]
+    }
+    </script>
+    
+    <!-- 结构化数据 - SoftwareApplication -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "map.ruiduobao.com",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Web Browser",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "CNY"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "1200"
+        }
+    }
+    </script>
+    
+    <!-- 结构化数据 - BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [{
+            "@type": "ListItem",
+            "position": 1,
+            "name": "首页",
+            "item": "https://map.ruiduobao.com/"
+        },{
+            "@type": "ListItem",
+            "position": 2,
+            "name": "行政区划查询",
+            "item": "https://map.ruiduobao.com/"
+        }]
+    }
+    </script>
+    
+    <!-- 结构化数据 - FAQ -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [{
+            "@type": "Question",
+            "name": "支持哪些行政区划级别？",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "支持省级、市级、县级、乡镇级、村级五级行政区划数据查询和下载。"
+            }
+        },{
+            "@type": "Question",
+            "name": "支持哪些数据格式？",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "支持GeoJSON、Shapefile、KML、GeoPackage、SVG等常见GIS数据格式导出。"
+            }
+        },{
+            "@type": "Question",
+            "name": "数据有哪些年份？",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "省级、市级、县级数据支持2000-2026年多年份；乡镇、村级数据约为2020年。"
+            }
+        }]
+    }
+    </script>
+    
+    <!-- 预连接优化 -->
+    <link rel="preconnect" href="https://webapi.amap.com">
+    <link rel="preconnect" href="https://restapi.amap.com">
+    <link rel="dns-prefetch" href="https://webapi.amap.com">
+    <link rel="dns-prefetch" href="https://restapi.amap.com">
+
+    <!-- 样式 - 提前加载 -->
+    <link rel="stylesheet" href="/css/styles.css?v=20260319">
+
+    <!-- 地图API - 同步加载（应用依赖） -->
     <script src="https://webapi.amap.com/maps?v=1.4.15&key=b6ba147ffd1e49158d12f7cb16d0f381"></script>
-    <link rel="stylesheet" href="/css/styles.css">
+
+    
+
+    <!-- D3.js - 本地化加载 -->
+    <script src="/js/d3.v7.min.js"></script>
 </head>
 <body>
-    <div id="MAP_title" style="background-color: lightblue; color: blue;height: 5%; text-align: center; font-weight: bold; font-size: 1.5em;">
-        五级行政区划查询
+    
+    
+    <!-- 语义化结构 -->
+    <header>
+        <h1 id="MAP_title">中国五级行政区划查询系统</h1>
+    </header>
+    <div id="loading">
+        <div class="loader"></div>
     </div>
-
-    <div style="height: 90%; display: flex; width: 100%;">
+    
+    <div class="main-container" style="height: calc(100vh - 60px); display: flex; width: 100%;">
         <!-- 左边的A部分 -->
-        <iframe id="provinceData" style="border: 1px solid lightblue; flex: 7;"></iframe>
+        <iframe id="provinceData"></iframe>
         <!-- 拖动条 -->
-        <div id="resizer" style="cursor: ew-resize; background-color: #ccc; width: 5px;"></div>
+        <div id="resizer"></div>
+        <div id="frameOverlay" style="display: none;"></div>
         <!-- 右边的B部分 -->
-        <div id="SELECT_AND_MAP" style="flex: 3; display: flex; flex-direction: column;">
+        <div id="SELECT_AND_MAP">
             <!-- 地图图层 -->
             <div id="download_info_DIV">
+                <div>
+                    <label>📍 历史行政区划数据查询</label>
+                </div>
                 <!-- 年份下拉框 -->
                 <label>时间:</label>
                 <select id="year" onchange="loadProvinces()">
@@ -32,59 +199,121 @@
                     <!-- 省份选项将根据所选年份通过JavaScript动态生成 -->
                 </select>
                 <!-- 查询按钮 -->
-                <button onclick="loadProvinceData()">查询</button>
+                <button onclick="loadProvinceData()">🔍 查询</button>
+                <a href="/others/使用说明.html" title="使用说明" style="text-decoration: none;">
+                    <img src="/pics/inst.png" alt="数据说明" style="display: inline-block; vertical-align: middle;">
+                </a>
+                <a href="https://github.com/ruiduobao/gaode_MAP_CUN" target="_blank" title="GitHub开源" style="text-decoration: none;">
+                    <img src="/pics/github.svg" alt="GitHub开源" style="height: 24px; vertical-align: middle; display: inline-block;">
+                </a>
+                <a href="https://www.ruiduobao.com/" target="_blank" title="锐多宝" style="text-decoration: none;">
+                    <img src="/pics/forum.svg" alt="锐多宝" style="height: 24px; vertical-align: middle; display: inline-block;">
+                </a>
             </div>
-            <div id="mapContainer" style="flex: 1; position: relative; z-index: 1000;">
-                <!-- 地图图层切换的下拉框，悬浮在左下角 -->
-                <div style="position: absolute; bottom: 10px; right: 10px; z-index: 1000;">
+            <div id="mapContainer">
+                <!-- 点击查询县级按钮 -->
+                <button id="pointQueryBtn" title="点击查询县级位置" onclick="togglePointQuery()">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="3"/>
+                        <path d="M12 2v4m0 12v4M2 12h4m12 0h4"/>
+                        <path d="M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+                    </svg>
+                </button>
+                <!-- 地图图层切换的下拉框，悬浮在右下角 -->
+                <div id="mapLayer">
                     <label for="mapLayer">底图:</label>
-                    <select id="mapLayer" onchange="switchMapLayer()">
-                        <option value="star_map">星图地球</option>
-                        <option value="satellite" selected>高德遥感卫星</option>
-                        <option value="satellite_road">高德卫星和路网</option>
-                        <option value="basic">高德标准图层</option>
+                    <select id="mapLayerSelect" onchange="switchMapLayer()">
+                        <optgroup label="卫星影像">
+                            <option value="ESRI" selected>ESRI 卫星</option>
+                            <option value="bing">必应卫星</option>
+                            <option value="gaode">高德卫星</option>
+                            <option value="maptiler">Maptiler 卫星</option>
+                            <option value="xingtu">星图地球</option>
+                            <option value="jilin">吉林一号</option>
+                            <option value="google">Google 卫星</option>
+                        </optgroup>
+                        <optgroup label="路网">
+                            <option value="satellite_road">高德卫星+路网</option>
+                        </optgroup>
                     </select>
                 </div>                
             </div>
+            <!-- 上下拖动条 -->
+            <div id="verticalResizer"></div>
             <!-- 右下角 -->
-            <div id="SELECT_province" style="height: 16%; display: flex; flex-direction: column;">
-                
-                <div id="downloadDIV" style="display: none; align-items: center;">
-                    <div id="downloadDIV_txt" >该区域查询到相关矢量，请选择下载格式</div>
-                    
-                    <ul id="formatSelect" style="display: none;" >
-                        <li data-value="shp">SHP</li>
-                        <li data-value="gson">GSON</li>
-                        <li id="SVGLI" data-value="svg">SVG</li>
-                    </ul>
-                </div>
-                <div id="downloadVectorBtn_DIV" style="display: none; align-items: center;">
-                    <button href="#" id="downloadVectorBtn">下载</button>
+            <div id="SELECT_province" style="position: relative; overflow-y: auto;">
+                <div id="downloadDIV" style="display: none; padding: 10px; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.15);">
+                    <div id="downloadDIV_txt" style="font-size: 12px; margin-bottom: 8px;">该区域查询到相关矢量，请点击所需格式下载</div>
+                    <!-- 当前选中信息 + 复制按钮 -->
+                    <div id="selectedInfo" style="margin: 8px 0; padding: 8px; background: #f5f5f5; border-radius: 4px; font-size: 12px;">
+                        <span id="selectedName">-</span> 
+                        <span id="selectedCode" style="color: #666;"></span>
+                        <button onclick="searchRegionName()" style="margin-left: 8px; padding: 2px 8px; font-size: 12px; cursor: pointer; border: 1px solid #ddd; background: white; border-radius: 3px;" title="必应搜索该地区">🔍</button>
+                    </div>
+                    <!-- 批量下载选项 -->
+                    <div id="batchDownload" style="margin: 8px 0; padding: 8px; background: #fff3cd; border-radius: 4px; font-size: 11px; display: none;">
+                        <label style="display: block; margin-bottom: 5px; font-weight: bold;" id="batchDownloadTitle">📦 批量下载（含下级）：</label>
+                        <div id="countyBatchOptions">
+                            <label><input type="checkbox" id="downloadXian" checked disabled> 县级</label>
+                            <label style="margin-left: 10px;"><input type="checkbox" id="downloadXiang" checked> 乡镇级</label>
+                            <label style="margin-left: 10px;"><input type="checkbox" id="downloadCun" checked> 村级</label>
+                        </div>
+                        <div id="cityBatchOptions" style="display: none;">
+                            <span style="color: #666;">包含：市级边界 + 所有县级 + 所有乡镇 + 所有村级</span>
+                        </div>
+                        <div id="villageModeRow" style="margin-top:6px;display:none;">
+                            <label style="font-size:11px;color:#555;">村级下载：</label>
+                            <select id="villageDownloadMode" style="font-size:11px;padding:3px 6px;">
+                                <option value="point_plus_xiang" selected>点+所在乡镇（推荐）</option>
+                                <option value="point_plus_xian">点+乡镇+县级</option>
+                                <option value="point">仅点</option>
+                                <option value="polygon">面（需启用）</option>
+                                <option value="none">不含村级</option>
+                            </select>
+                        </div>
+                        <button onclick="downloadBatch()" style="margin-top: 8px; padding: 6px 16px; background: #38a169; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; width: 100%;">📦 批量下载 (<span id="batchFormatLabel">SHP</span>)</button>
+                    </div>
+                    <ul id="formatSelect" style="display: none; list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 5px;">
+                        <li data-value="shp" style="padding: 5px 10px; background: #1890ff; color: white; border-radius: 4px; cursor: pointer; font-size: 12px;" onclick="downloadData('shp')">SHP</li>
+                        <li data-value="gson" style="padding: 5px 10px; background: #52c41a; color: white; border-radius: 4px; cursor: pointer; font-size: 12px;" onclick="downloadData('gson')">GeoJSON</li>
+                        <li data-value="kml" style="padding: 5px 10px; background: #fa8c16; color: white; border-radius: 4px; cursor: pointer; font-size: 12px;" onclick="downloadData('kml')">KML</li>
+                        <li data-value="gpkg" style="padding: 5px 10px; background: #722ed1; color: white; border-radius: 4px; cursor: pointer; font-size: 12px;" onclick="downloadData('gpkg')">GeoPackage</li>
+                        <li id="SVGLI" data-value="svg" style="padding: 5px 10px; background: #eb2f96; color: white; border-radius: 4px; cursor: pointer; font-size: 12px;" onclick="downloadData('svg')">SVG</li>
+                    </ul>                    
                 </div>
             </div>            
         </div>
     </div>
     
-    
-    <!-- 密码输入框，输入密码后才能下载数据-->
-    <div id="passwordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.6);  align-items: center; justify-content: center;z-index: 1100;">
-        <div style="display: flex; background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-width: 80%;">
-            <div style="flex: 1; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <img src="pics/gongzhonghao.jpg" alt="公众号 遥感之家" style="max-width: 100%; max-height: 100%; border-radius: 10px;" />
-                <h3>公众号 遥感之家 回复"密码"</h3>
-            </div> 
-            <!-- Password Section -->
-            <div id="passwordbox" style="flex: 1; padding: 20px; display: flex; flex-direction: column; align-items: center;justify-content: center;">
-                <label>请输入密码:</label>
-                <input type="txt" id="passwordInput" style="margin-top: 10px; width: 100%;" />
-                <button onclick="checkPassword()" style="margin-top: 10px;">下载数据</button>
-            </div>
-            <!-- Image Section -->
+    <!-- <div id="footer" style="text-align: center; margin-top: 20px;">
+        <a href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备2021024989号-2</a>
+    </div> -->
 
+    <!-- 密码验证弹窗 -->
+    <div id="passwordModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 30px; border-radius: 10px; text-align: center; max-width: 400px;">
+            <h3 style="margin-bottom: 15px;">下载验证</h3>
+            <p style="margin-bottom: 15px; color: #666;">下载次数超过20次，请输入密码继续下载</p>
+            <p style="margin-bottom: 15px; color: #999; font-size: 12px;">请关注微信公众号"锐多宝"获取密码</p>
+            <div style="margin-bottom: 15px;">
+                <img src="/pics/gongzhonghao.jpg" alt="微信公众号二维码" style="max-width: 200px; border: 1px solid #eee;">
+            </div>
+            <input type="password" id="passwordInput" placeholder="请输入密码" style="padding: 10px; width: 200px; border: 1px solid #ccc; border-radius: 5px; margin-bottom: 15px;">
+            <div>
+                <button onclick="submitPassword()" style="padding: 10px 30px; background: #4a90d9; color: white; border: none; border-radius: 5px; cursor: pointer; margin-right: 10px;">确认</button>
+                <button onclick="hidePasswordModal()" style="padding: 10px 30px; background: #ccc; color: #333; border: none; border-radius: 5px; cursor: pointer;">取消</button>
+            </div>
         </div>
-    </div> 
-    <div id="footer" style="text-align: center; margin-top: 20px;">
-        <a href="/others/使用说明.html" target="_blank">使用说明</a>
+    </div>
+
+    <!-- 封禁提示弹窗 -->
+    <div id="banModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
+        <div style="background: white; padding: 30px; border-radius: 10px; text-align: center; max-width: 400px;">
+            <h3 style="margin-bottom: 15px; color: #d9534f;">下载已受限</h3>
+            <p style="margin-bottom: 15px; color: #666;">您的下载次数已超过100次，已被禁止下载30分钟</p>
+            <p id="banCountdown" style="margin-bottom: 15px; color: #999;"></p>
+            <button onclick="hideBanModal()" style="padding: 10px 30px; background: #4a90d9; color: white; border: none; border-radius: 5px; cursor: pointer;">知道了</button>
+        </div>
     </div>
 
     <script>
@@ -95,6 +324,72 @@
         let iframe
         // 在这个函数的最开始声明Year和Province
         let Year, Province; 
+        //选中格式为全局变量
+        let selectedFormat; 
+        // 从全局变量或其他地方获取dataCode和address
+        let id ;  
+        //下载链接为全局变量
+        let downloadUrl;  
+        //从首页选中的省份代码为全局变量
+        let SHENG_datacode;
+        // 当页面加载完毕时执行，加载动画
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                document.getElementById('loading').style.display = 'none';
+            }, 1000);
+            
+            // 移动端：点击左侧面板外部区域关闭面板
+            document.addEventListener('click', function(e) {
+                const panel = document.getElementById('provinceData');
+                const btn = document.getElementById('mobileMenuBtn');
+                if (window.innerWidth <= 599 && 
+                    panel && panel.classList.contains('show') && 
+                    !panel.contains(e.target) && 
+                    !btn.contains(e.target)) {
+                    panel.classList.remove('show');
+                }
+            });
+        });
+
+        // 移动端菜单切换
+        function toggleMobileMenu() {
+            const panel = document.getElementById('provinceData');
+            if (panel) {
+                panel.classList.toggle('show');
+            }
+        }
+        
+        // 移动端列表切换 - 展开/收起选择器面板
+        function toggleMobileList() {
+            const panel = document.getElementById('provinceData');
+            const listBtn = document.getElementById('mobileListBtn');
+
+            if (panel) {
+                if (panel.classList.contains('hide')) {
+                    // 当前是收起状态，展开
+                    panel.classList.remove('hide');
+                    if (listBtn) listBtn.textContent = '🗺️';
+                } else {
+                    // 当前是展开状态，收起
+                    panel.classList.add('hide');
+                    if (listBtn) listBtn.textContent = '📍';
+                }
+            }
+        }
+
+        // 关闭移动端选择器
+        function closeMobileList() {
+            const panel = document.getElementById('provinceData');
+            const listBtn = document.getElementById('mobileListBtn');
+
+            if (panel) {
+                panel.classList.add('hide');
+            }
+            if (listBtn) {
+                listBtn.textContent = '📍';
+            }
+        }
+
         // 在页面加载时为每个下载格式li元素添加点击事件监听器
         window.onload = function() {
             const formatItems = document.querySelectorAll("#formatSelect li");
@@ -104,20 +399,63 @@
                     formatItems.forEach(i => i.classList.remove('selected'));
                     // 为所选的li添加selected类
                     item.classList.add('selected');
+                    
+                    // 更新批量下载按钮的格式标签
+                    const batchFormatLabel = document.getElementById('batchFormatLabel');
+                    if (batchFormatLabel) {
+                        const formatValue = item.getAttribute('data-value');
+                        const formatNames = { shp: 'SHP', gson: 'GeoJSON', kml: 'KML', gpkg: 'GeoPackage', svg: 'SVG' };
+                        batchFormatLabel.textContent = formatNames[formatValue] || formatValue.toUpperCase();
+                    }
                 });
             });
-            // 默认选中SHP
-            const defaultSelected = document.querySelector("#formatSelect li[data-value='shp']");
-            if (defaultSelected) {
-                defaultSelected.classList.add('selected');
+            
+        }
+        //每个li元素的a标签添加点击事件监听器
+        async function downloadData(format) {
+            selectedFormat = format;
+            // 优先使用编码，确保所有下载都使用行政编码
+            id = dataCode || SHENG_datacode;
+            // 只有在没有编码时才使用地名
+            if (!id && address) {
+                id = encodeURIComponent(address);
+            }
+            // 获取当前选择的年份
+            const yearSelect = document.getElementById('year');
+            const year = yearSelect ? yearSelect.value.replace('年', '') : '2023';
+            downloadUrl = `/downloadVector/${id}?format=${selectedFormat}&year=${year}`;
+            
+            console.log('下载参数 - id:', id, 'year:', year, 'format:', selectedFormat);
+
+            // 检查下载状态
+            try {
+                const statusResponse = await fetch('/checkDownloadStatus');
+                const status = await statusResponse.json();
+
+                // 如果被封禁
+                if (status.isBanned) {
+                    const banEndTime = new Date(status.banEndTime);
+                    const now = new Date();
+                    const remainingMinutes = Math.ceil((banEndTime - now) / 60000);
+                    document.getElementById('banCountdown').textContent = `解封时间：${remainingMinutes}分钟后`;
+                    showBanModal();
+                    return;
+                }
+
+                // 如果需要密码验证
+                if (status.needPassword) {
+                    showPasswordModal();
+                    return;
+                }
+
+                // 正常下载
+                window.location.href = downloadUrl;
+            } catch (error) {
+                console.error('检查下载状态失败:', error);
+                window.location.href = downloadUrl;
             }
         }
 
-        //添加JavaScript来监听下载链接的点击事件
-        document.getElementById('downloadVectorBtn').addEventListener('click', function(e) {
-        e.preventDefault(); // 阻止默认的下载行为
-        showPasswordModal(); // 显示模态对话框
-        });
 
         function showPasswordModal() {
             const modal = document.getElementById('passwordModal');
@@ -127,47 +465,160 @@
         function hidePasswordModal() {
             const modal = document.getElementById('passwordModal');
             modal.style.display = 'none';
+            document.getElementById('passwordInput').value = '';
         }
-        //检查密码
-        function checkPassword() {
-            const input = document.getElementById('passwordInput');
 
-            const selectedFormatItem = document.querySelector("#formatSelect li.selected");
-            // 如果没有选中的格式，返回或给出警告
-            if (!selectedFormatItem) {
-                alert("请选择一个格式");
+        function showBanModal() {
+            const modal = document.getElementById('banModal');
+            modal.style.display = 'flex';
+        }
+
+        function hideBanModal() {
+            const modal = document.getElementById('banModal');
+            modal.style.display = 'none';
+        }
+
+        // 提交密码验证
+        async function submitPassword() {
+            const password = document.getElementById('passwordInput').value;
+            if (!password) {
+                alert('请输入密码');
                 return;
             }
-            const selectedFormat = selectedFormatItem.getAttribute('data-value');
-            
-            if (input.value === '4444') {
-                hidePasswordModal();
-                // 使用全局变量dataCode构建下载链接
-                let id = dataCode || address;  // 从全局变量或其他地方获取dataCode和address
-                if (address) {
-                    id = encodeURIComponent(address);  // 对地址进行编码以确保URL正确
+
+            try {
+                const response = await fetch('/verifyPassword', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password: password })
+                });
+                const data = await response.json();
+
+                if (data.success) {
+                    hidePasswordModal();
+                    // 密码验证成功，重新下载
+                    if (downloadUrl) {
+                        window.location.href = downloadUrl;
+                    }
+                } else {
+                    alert(data.message);
                 }
-                const downloadUrl = `/downloadVector/${id}?format=${selectedFormat}`;
-                window.location.href = downloadUrl;
-            } else {
-                alert('密码错误。关注公众号"遥感之家"回复密码');
+            } catch (error) {
+                console.error('密码验证失败:', error);
+                alert('验证失败，请重试');
             }
         }
+        // //检查密码
+        // function checkPassword() {
+        //     const input = document.getElementById('passwordInput');
+        //     const selectedFormatItem = document.querySelector("#formatSelect li.selected");
+        //     // 如果没有选中的格式，返回或给出警告
+        //     if (!selectedFormatItem) {
+        //         alert("请选择一个格式");
+        //         return;
+        //     }
+        //     selectedFormat=null
+        //     selectedFormat = selectedFormatItem.getAttribute('data-value');
+            
+        //     if (input.value === '4444') {
+        //         hidePasswordModal();
+        //         // 使用全局变量dataCode构建下载链接
+        //         id=null
+        //         id = dataCode || address|| SHENG_datacode;  // 从全局变量或其他地方获取dataCode和address
+        //         if (address) {
+        //             id = encodeURIComponent(address);  // 对地址进行编码以确保URL正确
+        //         }
+        //         downloadUrl=null
+        //         downloadUrl = `/downloadVector/${id}?format=${selectedFormat}`;
+        //         window.location.href = downloadUrl;
+
+        //     } else {
+        //         alert('密码错误。关注公众号"遥感之家"回复密码');
+        //     }
+            
+        // }
     
 
         // 定义地图层
-        let basicLayer = new AMap.TileLayer();
-        let satelliteLayer = new AMap.TileLayer.Satellite();
-        let roadNetLayer = new AMap.TileLayer.RoadNet();
         let satelliteAndRoadNetLayer = [new AMap.TileLayer.Satellite(), new AMap.TileLayer.RoadNet()];
-        //定义星图地球
+        
+        // 星图地球
         let XINGTU = new AMap.TileLayer({
             getTileUrl: function(x, y, z) {
                 return 'https://tiles.geovisearth.com/base/v1/img/' + z + '/' + x + '/' + y + '.webp?format=webp&tmsIds=w&token=0aeb02f29320b060c2e2d0c04eb4887c6b8d5a8ed479b3aacff2b6a273b0d38d';
             },
             tileSize: 256,
             zIndex: 100
-            });
+        });
+
+        // Google 卫星代理
+        let GOOGLE_LAYER = new AMap.TileLayer({
+            getTileUrl: function(x, y, z) {
+                return 'https://gac-geo.googlecnapps.cn/maps/vt?lyrs=s%40781&hl=zh-CN&x=' + x + '&y=' + y + '&z=' + z + '&src=app&scale=2&from=app';
+            },
+            tileSize: 256,
+            zIndex: 100
+        });
+
+        // ESRI 卫星
+        let ESRILAYER = new AMap.TileLayer({
+            getTileUrl: function(x, y, z) {
+                return 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/' + z + '/' + y + '/' + x;
+            },
+            tileSize: 256,
+            zIndex: 100
+        });
+
+        // 必应卫星 (quadkey 方式)
+        let BINGLAYER = new AMap.TileLayer({
+            getTileUrl: function(x, y, z) {
+                let quadKey = '';
+                for (let i = z; i > 0; i--) {
+                    let digit = 0;
+                    let mask = 1 << (i - 1);
+                    if ((x & mask) !== 0) digit++;
+                    if ((y & mask) !== 0) digit += 2;
+                    quadKey += digit;
+                }
+                return 'https://ecn.t3.tiles.virtualearth.net/tiles/a' + quadKey + '.jpeg?g=1';
+            },
+            tileSize: 256,
+            zIndex: 100
+        });
+
+        // 高德卫星（纯卫星，无路网）
+        let GAODELAYER = new AMap.TileLayer({
+            getTileUrl: function(x, y, z) {
+                return 'https://webst01.is.autonavi.com/appmaptile?style=6&x=' + x + '&y=' + y + '&z=' + z;
+            },
+            tileSize: 256,
+            zIndex: 100
+        });
+
+        // Maptiler 卫星
+        let MAPTILERLAYER = new AMap.TileLayer({
+            getTileUrl: function(x, y, z) {
+                return 'https://api.maptiler.com/maps/satellite/256/' + z + '/' + x + '/' + y + '.jpg?key=KaApU8APvFK7ei4NWcWX';
+            },
+            tileSize: 256,
+            zIndex: 100
+        });
+
+        // 吉林一号 (TMS 格式，y 翻转)
+        let JILINLAYER = new AMap.TileLayer({
+            getTileUrl: function(x, y, z) {
+                let tmsY = Math.pow(2, z) - 1 - y;  // TMS y 坐标翻转
+                return 'https://map.jl1.cn/maptile/maptile.php?maptype=Satellite&x=' + x + '&y=' + tmsY + '&z=' + z;
+            },
+            tileSize: 256,
+            zIndex: 100
+        });
+
+
+
+
         // 初始化地图
         const map = new AMap.Map('mapContainer', {
             zoom: 2,
@@ -175,50 +626,284 @@
             center: [<%= longitude %>, <%= latitude %>],
             // zoom: 15,
             // center: [105, 42],
-            layers: [XINGTU]  // 默认显示遥感图层
+            layers: [ESRILAYER]  // 默认显示遥感图层
         });
+
+
+
+
         //加载历年来行政区划关系图
         iframe == null
         iframe = document.getElementById('provinceData');
-        const QUHUA_20102023='2010年-2023年全国省级'
-        iframe.src = `/others/${encodeURIComponent(QUHUA_20102023)}.html`;
+        
+        // 标志位：用户是否已选择省份（防止resize重置）
+        let hasSelectedProvince = false;
+        
+        // 加载省份选择器（手机端与 PC 端使用同一份）
+        function loadProvinceSelector() {
+            // 如果用户已选择省份，不重置
+            if (hasSelectedProvince) return;
+
+            const cacheBuster = '?v=' + Date.now();
+            iframe.src = '/province-selector.html' + cacheBuster;
+        }
+
+        // 立即加载
+        loadProvinceSelector();
+
+        // 窗口大小变化时重新加载（仅在选择省份前）
+        window.addEventListener('resize', function() {
+            // 防抖
+            clearTimeout(window.resizeTimer);
+            window.resizeTimer = setTimeout(loadProvinceSelector, 200);
+        });
+        
         const titleDiv = document.getElementById('MAP_title');
         titleDiv.innerHTML = `全国五级行政区划查询与下载`;
 
+        // ===== 点击查询县级功能 =====
+        let isPointQueryMode = false;
+        let pointQueryClickListener = null;
 
+        function togglePointQuery() {
+            const btn = document.getElementById('pointQueryBtn');
+            
+            if (isPointQueryMode) {
+                // 取消查询模式
+                isPointQueryMode = false;
+                btn.classList.remove('active');
+                map.setDefaultCursor('default');
+                if (pointQueryClickListener) {
+                    map.off('click', pointQueryClickListener);
+                    pointQueryClickListener = null;
+                }
+            } else {
+                // 进入查询模式
+                isPointQueryMode = true;
+                btn.classList.add('active');
+                map.setDefaultCursor('help'); // 鼠标变成问号
+                
+                pointQueryClickListener = function(e) {
+                    const lng = e.lnglat.getLng();
+                    const lat = e.lnglat.getLat();
+                    
+                    // 自动退出查询模式
+                    togglePointQuery();
+                    
+                    // 调用API查询县级
+                    queryCountyByPoint(lng, lat);
+                };
+                
+                map.on('click', pointQueryClickListener);
+            }
+        }
+
+        async function queryCountyByPoint(lng, lat) {
+            try {
+                const response = await fetch(`/getGsonDB/point-query?lng=${lng}&lat=${lat}&year=2023`);
+                const result = await response.json();
+                
+                if (result.status === 'success') {
+                    const { code, name, shengCode, shiCode, filepath } = result.data;
+                    
+                    // 显示县级边界
+                    loadGeoJSONfromPath(filepath);
+                    
+                    // 更新全局变量
+                    dataCode = code;
+                    address = null;
+                    
+                    // 显示下载按钮
+                    checkAndShowDownloadButton(code);
+                    
+                    // 更新选中信息
+                    document.getElementById('selectedName').textContent = name;
+                    document.getElementById('selectedCode').textContent = `(${code})`;
+                    
+                    // 获取省份名称（从编码映射）
+                    const provinceNames = {
+                        '11': '北京市', '12': '天津市', '13': '河北省', '14': '山西省',
+                        '15': '内蒙古自治区', '21': '辽宁省', '22': '吉林省', '23': '黑龙江省',
+                        '31': '上海市', '32': '江苏省', '33': '浙江省', '34': '安徽省',
+                        '35': '福建省', '36': '江西省', '37': '山东省', '41': '河南省',
+                        '42': '湖北省', '43': '湖南省', '44': '广东省', '45': '广西壮族自治区',
+                        '46': '海南省', '50': '重庆市', '51': '四川省', '52': '贵州省',
+                        '53': '云南省', '54': '西藏自治区', '61': '陕西省', '62': '甘肃省',
+                        '63': '青海省', '64': '宁夏回族自治区', '65': '新疆维吾尔自治区',
+                        '71': '台湾省', '81': '香港特别行政区', '82': '澳门特别行政区'
+                    };
+                    const provinceCode = code.substring(0, 2);
+                    const targetProvince = provinceNames[provinceCode];
+                    
+                    // 检查当前iframe是否显示目标省份
+                    const iframe = document.getElementById('provinceData');
+                    const currentSrc = iframe ? iframe.src : '';
+                    const isCorrectProvince = currentSrc.includes(`province=${encodeURIComponent(targetProvince)}`);
+                    
+                    if (!isCorrectProvince && targetProvince) {
+                        // 需要先切换到正确的省份
+                        iframe.src = `/tree.html?year=2023&province=${encodeURIComponent(targetProvince)}`;
+                        
+                        // 等待iframe加载完成后发送消息
+                        iframe.onload = function() {
+                            setTimeout(() => {
+                                if (iframe.contentWindow) {
+                                    iframe.contentWindow.postMessage({
+                                        type: 'expandToCounty',
+                                        countyCode: code,
+                                        countyName: name,
+                                        shengCode: shengCode,
+                                        shiCode: shiCode
+                                    }, '*');
+                                }
+                            }, 500);
+                        };
+                    } else {
+                        // 直接发送消息展开到该县
+                        if (iframe && iframe.contentWindow) {
+                            iframe.contentWindow.postMessage({
+                                type: 'expandToCounty',
+                                countyCode: code,
+                                countyName: name,
+                                shengCode: shengCode,
+                                shiCode: shiCode
+                            }, '*');
+                        }
+                    }
+                } else {
+                    alert('该位置未找到县级数据，请尝试其他位置');
+                }
+            } catch (err) {
+                console.error('查询失败:', err);
+                alert('查询失败，请稍后重试');
+            }
+        }
 
         function switchMapLayer() {
-            const selectedLayer = document.getElementById('mapLayer').value;
-            if (selectedLayer === 'satellite') {
-                switchToSatelliteMap();
-            } else if (selectedLayer === 'basic') {
-                switchToBasicMap();
-            } else if (selectedLayer === 'satellite_road') {
-                switchToSatelliteAndRoadNetMap();            
-            }else if (selectedLayer === 'star_map') {
-                switchToStarMap();
-            }
-        }
+            const selectedLayer = document.getElementById('mapLayerSelect').value;
+            console.log('切换底图:', selectedLayer);
             
-
-        function switchToSatelliteMap() {
-            map.setLayers([satelliteLayer]);
-        }
-
-        function switchToBasicMap() {
-            map.setLayers([basicLayer]);
-        }
-        function switchToSatelliteAndRoadNetMap() {
-            map.setLayers(satelliteAndRoadNetLayer);
-        }
-        function switchToStarMap() {
-            map.setLayers([XINGTU]);
+            switch (selectedLayer) {
+                case 'ESRI':
+                    map.setLayers([ESRILAYER]);
+                    break;
+                case 'bing':
+                    map.setLayers([BINGLAYER]);
+                    break;
+                case 'gaode':
+                    map.setLayers([GAODELAYER]);
+                    break;
+                case 'maptiler':
+                    map.setLayers([MAPTILERLAYER]);
+                    break;
+                case 'xingtu':
+                    map.setLayers([XINGTU]);
+                    break;
+                case 'jilin':
+                    map.setLayers([JILINLAYER]);
+                    break;
+                case 'google':
+                    map.setLayers([GOOGLE_LAYER]);
+                    break;
+                case 'satellite_road':
+                    map.setLayers(satelliteAndRoadNetLayer);
+                    break;
+                default:
+                    map.setLayers([ESRILAYER]);
             }
+        }
         // 监听iframe传来的消息并处理
         window.addEventListener('message', async (event) => {
-
         console.log(event);
         switch(event.data.type) {
+        case 'closeMobileList':
+            // 手机端关闭列表
+            closeMobileList();
+            break;
+        case 'hidePanel':
+            // 历史 mobile-selector 消息分支，PC/移动端统一使用 province-selector，不再走这条
+            break;
+        case 'collapseMobileSelector':
+            // 历史 mobile-selector 消息分支，PC/移动端统一使用 province-selector，不再走这条
+            break;
+        case 'showPanel':
+            // 历史 mobile-selector 消息分支，PC/移动端统一使用 province-selector，不再走这条
+            break;
+        case 'resetMap':
+            // 重置地图视野，但不关闭选择面板
+            map.setZoom(2);
+            map.setCenter([105, 35]);
+            map.clearMap();
+            break;
+        case 'jumpToRegion':
+            // 标记用户已选择省份，防止resize重置
+            hasSelectedProvince = true;
+            // 从搜索结果跳转到对应区域
+            const jumpCode = event.data.code;
+            const jumpName = event.data.name;
+            const jumpLevel = event.data.level;
+            const jumpTargetCode = event.data.targetCode;
+            
+            console.log('跳转到:', jumpName, jumpCode, jumpLevel);
+            
+            // 更新全局变量
+            dataCode = jumpCode;
+            address = jumpName;
+            
+            // 获取省份编码
+            const jumpProvinceCode = jumpCode.substring(0, 2) + '0000';
+            const currentProvinceCode = (SHENG_datacode || '').substring(0, 2) + '0000';
+            
+            // 判断是否需要切换省份
+            if (jumpProvinceCode !== currentProvinceCode) {
+                // 需要切换省份
+                const provinceNames = {
+                    '110000': '北京市', '120000': '天津市', '130000': '河北省',
+                    '140000': '山西省', '150000': '内蒙古自治区', '210000': '辽宁省',
+                    '220000': '吉林省', '230000': '黑龙江省', '310000': '上海市',
+                    '320000': '江苏省', '330000': '浙江省', '340000': '安徽省',
+                    '350000': '福建省', '360000': '江西省', '370000': '山东省',
+                    '410000': '河南省', '420000': '湖北省', '430000': '湖南省',
+                    '440000': '广东省', '450000': '广西壮族自治区', '460000': '海南省',
+                    '500000': '重庆市', '510000': '四川省', '520000': '贵州省',
+                    '530000': '云南省', '540000': '西藏自治区', '610000': '陕西省',
+                    '620000': '甘肃省', '630000': '青海省', '640000': '宁夏回族自治区',
+                    '650000': '新疆维吾尔自治区', '810000': '香港特别行政区',
+                    '820000': '澳门特别行政区', '710000': '台湾省'
+                };
+                
+                const newProvince = provinceNames[jumpProvinceCode];
+                if (newProvince) {
+                    // 更新下拉框
+                    const provinceSelect = document.getElementById('province');
+                    if (provinceSelect) {
+                        provinceSelect.value = newProvince;
+                    }
+                    
+                    // 更新标题
+                    const yearSelect = document.getElementById('year');
+                    const year = yearSelect ? yearSelect.value : '2023年';
+                    document.getElementById('MAP_title').innerHTML = `${year}${newProvince}五级行政区划`;
+                    
+                    // 更新全局变量
+                    SHENG_datacode = jumpProvinceCode;
+                    
+                    // 重新加载树状图，传递目标编码
+                    iframe = document.getElementById('provinceData');
+                    const yearNum = year.replace('年', '');
+                    iframe.src = `/tree.html?year=${encodeURIComponent(yearNum)}&province=${encodeURIComponent(newProvince)}&targetCode=${jumpTargetCode}`;
+                }
+            }
+            
+            // 加载地图数据
+            if (jumpCode.length === 12 && !jumpCode.endsWith('000')) {
+                loadCunData(jumpCode);
+            } else if (jumpCode.length === 12 || jumpCode.length === 9) {
+                exportgsontoDIR(jumpCode.length === 9 ? jumpCode + '000' : jumpCode);
+            } else {
+                exportgsontoDIR(jumpCode);
+            }
+            break;
         case 'updateMapByAddress': 
             address = event.data.address;  //// 更新全局变量address
             dataCode = null;  // 清除dataCode的值
@@ -233,19 +918,45 @@
             });
             break;
         case 'updateMapByCode':
+            // 标记用户已选择省份，防止resize重置
+            hasSelectedProvince = true;
             dataCode = event.data.code;  //// 更新全局变量dataCode
-            address = null;  // 清除address的值
-            exportgsontoDIR(dataCode)
-                .then(() => {
-                    console.log('Successfully completed exportgsontoDIR!'); // 打印 exportgsontoDIR 完成状态
-                })
-                .catch(error => {
-                    console.log('exportgsontoDIR! failed'); // 打印 exportgsontoDIR 完成状态
-                    console.error('Error in the sequence:', error);
-                });
+            address = event.data.name || null;  // 同时更新名称
+            console.log('Received code:', dataCode, 'Level:', event.data.level);
+            
+            // 根据编码长度和格式判断级别
+            if (!dataCode) {
+                console.error('无效的编码');
+                return;
+            }
+            
+            if (dataCode.length === 12 && !dataCode.endsWith('000')) {
+                // 12位且不以000结尾 - 村级编码
+                loadCunData(dataCode);
+            } else if (dataCode.length === 12 && dataCode.endsWith('000')) {
+                // 12位以000结尾 - 乡镇级编码
+                exportgsontoDIR(dataCode);
+            } else if (dataCode.length === 9) {
+                // 9位 - 乡镇级编码，数据库中是12位（补000）
+                exportgsontoDIR(dataCode + '000');
+            } else {
+                // 省市县级
+                exportgsontoDIR(dataCode)
+                    .then(() => {
+                        console.log('Successfully completed exportgsontoDIR!');
+                    })
+                    .catch(error => {
+                        console.log('exportgsontoDIR! failed');
+                        console.error('Error in the sequence:', error);
+                    });
+            }
             break;
         //首页的消息接收
         case 'updateMapByYearsheng':
+            // 标记用户已选择省份，防止resize重置
+            hasSelectedProvince = true;
+            //添加一个加载动画
+            document.getElementById('loading').style.display = 'flex';
             Province=null
             Year=null
             Yearsheng = event.data.yearsheng;  //// 更新全局变量dataCode
@@ -259,11 +970,13 @@
                 } else {
                 console.error('从首页输入字符串不符合预期格式');
             }
-            //加载对应的year和省份的html到网页中
+            //加载对应的year和省份的树状视图到网页中
             //清楚iframe的值
             iframe == null
             iframe = document.getElementById('provinceData');
-            iframe.src = `/year/${encodeURIComponent(Year)}/${encodeURIComponent(Province)}.html`;
+            // 使用新的树状视图页面
+            const yearNum = Year.replace('年', '');
+            iframe.src = `/tree.html?year=${encodeURIComponent(yearNum)}&province=${encodeURIComponent(Province)}`;
             const titleDiv = document.getElementById('MAP_title');
             titleDiv.innerHTML = `${Year}${Province}五级行政区划`;
             //加载对应省份的代码到地图中
@@ -303,9 +1016,17 @@
                 '澳门特别行政区': '820000',
                 '台湾省': '710000'
                 };
-            const SHENG_datacode = provinceCodes[Province] || '省份名字不正确';
+            SHENG_datacode = provinceCodes[Province] || '省份名字不正确';
+            // 设置省份名称用于显示和复制
+            address = Province;
+            //导出数据
             exportgsontoDIR(SHENG_datacode)
-            break;
+            // 当iframe加载完成，隐藏加载等待界面
+            iframe.onload = function() {
+                setTimeout(function() {
+                    document.getElementById('loading').style.display = 'none';
+                }, 600); // 你可以根据需要调整这个时间
+            };
             }
         });
 
@@ -330,22 +1051,85 @@
             }
         
         //将地理编码查询到的矢量进行显示和下载
+        // function Codegson(address) {
+        //     return fetch(`/getGeoAddress?address=${address}`)
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             console.log('GEOCODE TO GSON successfully:', data);
+        //             if(data.status === 'success') {
+        //                 checkAndShowDownloadButton(address);
+        //                 //不显示村级下载svg数据
+        //                 const SVGLI_LI = document.getElementById('SVGLI');
+        //                 SVGLI_LI.style.display = 'none';
+        //                 loadGeoPointJSONfromPath(data.filepath) // 使用返回的路径来加载村级点GeoJSON
+        //             }
+        //         })
+        //         .catch(error => {
+        //             console.error('GEOCODE TO GSON error', error);
+        //             throw error;
+        //         });
+        // }
+
         function Codegson(address) {
-            return fetch(`/getGeoAddress?address=${address}`)
+            return fetch(`/getCunAddress?address=${address}`)
                 .then(response => response.json())
                 .then(data => {
                     console.log('GEOCODE TO GSON successfully:', data);
                     if(data.status === 'success') {
                         checkAndShowDownloadButton(address);
-                        //不显示村级下载svg数据
-                        const SVGLI_LI = document.getElementById('SVGLI');
-                        SVGLI_LI.style.display = 'none';
-                        loadGeoPointJSONfromPath(data.filepath) // 使用返回的路径来加载村级点GeoJSON
+                        
+                        // 根据数据类型选择显示方式
+                        if(data.message === 'Point') {
+                            // 点数据
+                            console.log('显示村级点数据，共', data.count, '个');
+                            // 隐藏SVG下载选项（点数据不适合SVG）
+                            const SVGLI_LI = document.getElementById('SVGLI');
+                            SVGLI_LI.style.display = 'none';
+                            loadGeoPointJSONfromPath(data.filepath);
+                        } else {
+                            // 面数据
+                            // 隐藏村级下载svg数据
+                            const SVGLI_LI = document.getElementById('SVGLI');
+                            SVGLI_LI.style.display = 'none';
+                            loadGeoJSONfromPath(data.filepath);
+                        }
                     }
+                    
                 })
                 .catch(error => {
                     console.error('GEOCODE TO GSON error', error);
                     throw error;
+                });
+        }
+
+        // 加载村级数据（通过村级编码）
+        function loadCunData(cunCode) {
+            // 更新全局变量
+            dataCode = cunCode;
+            // 注意：address 已在 updateMapByCode 中设置为 event.data.name，此处不清空
+            
+            fetch(`/getCunAddress?code=${cunCode}`)
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Cun data:', data);
+                    if(data.status === 'success') {
+                        checkAndShowDownloadButton(cunCode);
+                        
+                        // 根据数据类型选择显示方式
+                        if(data.message === 'Point') {
+                            // 点数据
+                            console.log('显示村级点数据，共', data.count, '个');
+                            loadGeoPointJSONfromPath(data.filepath);
+                        } else {
+                            // 面数据
+                            loadGeoJSONfromPath(data.filepath);
+                        }
+                    } else {
+                        console.log('No village data found');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading cun data:', error);
                 });
         }
 
@@ -382,7 +1166,9 @@
         //高德显示面矢量
         function loadGeoJSONfromPath(filepath) {
             map.clearMap();
-            fetch(filepath)
+            // 添加时间戳避免缓存
+            const url = filepath + '?t=' + Date.now();
+            fetch(url)
                 .then(response => response.json())
                 .then(geojsonData => {
                     const geojson = new AMap.GeoJSON({
@@ -392,7 +1178,7 @@
                                 path: lnglats,
                                 strokeColor: '#ff33cc',
                                 fillColor: '#ffc3a0',
-                                fillOpacity: 0.5
+                                fillOpacity: 0  // 空心实线，内部无填充
                             });
                         }
                     });
@@ -409,17 +1195,256 @@
 
         //是否展示下载按钮函数
         function checkAndShowDownloadButton(dataCode) {
-            const btn = document.getElementById('downloadVectorBtn');
             const formatSelect = document.getElementById('formatSelect');
             const downloadDIV_DIV = document.getElementById('downloadDIV');
-            const downloadDIV_DIV2 = document.getElementById('downloadVectorBtn_DIV');
-            btn.style.display = 'block';
-            formatSelect.style.display = 'block';
-            downloadDIV_DIV.style.display='block'
-            downloadDIV_DIV2.style.display='block'
+            formatSelect.style.display = 'flex';
+            downloadDIV_DIV.style.display='block';
             
-            console.log(btn.href);
+            // 更新选中信息显示
+            updateSelectedInfo(dataCode);
+            
+            // 显示/隐藏批量下载选项（县级和地级市显示）
+            const batchDiv = document.getElementById('batchDownload');
+            const batchTitle = document.getElementById('batchDownloadTitle');
+            const countyOptions = document.getElementById('countyBatchOptions');
+            const cityOptions = document.getElementById('cityBatchOptions');
+            
+            if (batchDiv) {
+                // 判断是县级还是地级市
+                // 地级市：6位且后2位为00（如 440100），或4位编码（如 4401）
+                const isCounty = dataCode && dataCode.length === 6 && !dataCode.endsWith('00');
+                const isCity = dataCode && (
+                    (dataCode.length === 6 && dataCode.endsWith('00') && !dataCode.endsWith('0000')) ||
+                    dataCode.length === 4
+                );
+                const isTown = dataCode && dataCode.length === 12 && dataCode.endsWith('000');
+                const villageModeRow = document.getElementById('villageModeRow');
+
+                if (isCounty) {
+                    batchDiv.style.display = 'block';
+                    batchTitle.textContent = '📦 批量下载县级（含下级）：';
+                    countyOptions.style.display = 'block';
+                    cityOptions.style.display = 'none';
+                    if (villageModeRow) villageModeRow.style.display = 'block';
+                } else if (isCity) {
+                    batchDiv.style.display = 'block';
+                    batchTitle.textContent = '📦 批量下载地级市（含下级）：';
+                    countyOptions.style.display = 'none';
+                    cityOptions.style.display = 'block';
+                    if (villageModeRow) villageModeRow.style.display = 'block';
+                } else if (isTown) {
+                    batchDiv.style.display = 'block';
+                    batchTitle.textContent = '📦 批量下载乡镇级（含下级）：';
+                    countyOptions.style.display = 'none';
+                    cityOptions.style.display = 'none';
+                    if (villageModeRow) villageModeRow.style.display = 'block';
+                } else {
+                    batchDiv.style.display = 'none';
+                    if (villageModeRow) villageModeRow.style.display = 'none';
+                }
             }
+        }
+        
+        // 统一批量下载函数（支持县级、地级市和乡镇）
+        async function downloadBatch() {
+            const code = dataCode;
+            if (!code) {
+                alert('请先选择一个区域');
+                return;
+            }
+            
+            // 获取当前选择的格式
+            const selectedFormatItem = document.querySelector('#formatSelect li.selected');
+            const format = selectedFormatItem ? selectedFormatItem.getAttribute('data-value') : 'shp';
+            
+            // 判断是县级、地级市还是乡镇
+            const isCounty = code.length === 6 && !code.endsWith('00');
+            const isCity = (code.length === 6 && code.endsWith('00') && !code.endsWith('0000')) || code.length === 4;
+            const isTown = code.length === 12 && code.endsWith('000');
+            
+            if (!isCounty && !isCity && !isTown) {
+                alert('请先选择一个县级、地级市或乡镇区域');
+                return;
+            }
+            
+            // 获取当前选择的年份
+            const yearSelect = document.getElementById('year');
+            const year = yearSelect ? yearSelect.value.replace('年', '') : '2023';
+            
+            // 对于地级市，如果是4位编码，需要补全为6位
+            const cityCode = isCity && code.length === 4 ? code + '00' : code;
+            
+            // 显示加载动画
+            showLoading('正在打包数据，请稍候...');
+            
+            try {
+                // 先检查下载状态
+                const statusResponse = await fetch('/checkDownloadStatus');
+                const status = await statusResponse.json();
+                
+                if (status.isBanned) {
+                    hideLoading();
+                    const banEndTime = new Date(status.banEndTime);
+                    const now = new Date();
+                    const remainingMinutes = Math.ceil((banEndTime - now) / 60000);
+                    document.getElementById('banCountdown').textContent = `解封时间：${remainingMinutes}分钟后`;
+                    showBanModal();
+                    return;
+                }
+                
+                if (status.needPassword) {
+                    hideLoading();
+                    showPasswordModal();
+                    return;
+                }
+                
+                // 根据类型选择不同的API
+                // 村级下载模式选择：默认 point_plus_xiang（点+乡镇），用户可改
+                const villageModeSel = document.getElementById('villageDownloadMode');
+                const downloadCunChk = document.getElementById('downloadCun');
+                let villageParam;
+                if (isTown) {
+                    // 乡镇级：不显示村级复选框，直接用选中的模式
+                    villageParam = villageModeSel ? villageModeSel.value : 'point_plus_xiang';
+                } else {
+                    // 县级/市级：根据村级复选框决定
+                    const includeCun = downloadCunChk ? downloadCunChk.checked : true;
+                    if (!includeCun) {
+                        villageParam = 'none';
+                    } else {
+                        villageParam = villageModeSel ? villageModeSel.value : 'point_plus_xiang';
+                    }
+                }
+
+                let downloadUrl;
+                if (isCounty) {
+                    downloadUrl = `/downloadCountyBatch/county/${code}?format=${format}&year=${year}&village=${villageParam}`;
+                } else if (isCity) {
+                    downloadUrl = `/downloadCityBatch/city/${cityCode}?format=${format}&year=${year}&village=${villageParam}`;
+                } else if (isTown) {
+                    downloadUrl = `/downloadTownBatch/town/${code}?format=${format}&year=${year}&village=${villageParam}`;
+                }
+                
+                const response = await fetch(downloadUrl);
+                
+                if (!response.ok) {
+                    throw new Error('下载失败: ' + response.status);
+                }
+                
+                // 获取文件名
+                const contentDisposition = response.headers.get('Content-Disposition');
+                let filename = isCounty ? `县级批量数据_${code}.zip` : `地级市批量数据_${cityCode}.zip`;
+                if (contentDisposition) {
+                    const utf8Match = contentDisposition.match(/filename\*=UTF-8''([^;]+)/);
+                    if (utf8Match) {
+                        filename = decodeURIComponent(utf8Match[1]);
+                    } else {
+                        const match = contentDisposition.match(/filename="?([^";]+)"?/);
+                        if (match) filename = match[1];
+                    }
+                }
+                
+                // 转换为 blob 并下载
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                // 下载完成，隐藏加载动画
+                hideLoading();
+                
+            } catch (error) {
+                hideLoading();
+                console.error('批量下载失败:', error);
+                alert('批量下载失败: ' + error.message);
+            }
+        }
+        
+        // 保留旧函数名以兼容
+        async function downloadCountyBatch(format) {
+            return downloadBatch(format);
+        }
+        
+        // 显示加载动画
+        function showLoading(message) {
+            const loading = document.getElementById('loading');
+            // 先移除旧的提示文字
+            const oldText = loading.querySelector('.loading-text');
+            if (oldText) oldText.remove();
+            
+            // 添加新的提示文字
+            const loader = loading.querySelector('.loader');
+            if (loader) {
+                loader.insertAdjacentHTML('afterend', `<div class="loading-text" style="margin-top: 16px; color: #718096;">${message}</div>`);
+            }
+            loading.style.display = 'flex';
+        }
+        
+        // 隐藏加载动画
+        function hideLoading() {
+            const loading = document.getElementById('loading');
+            loading.style.display = 'none';
+            const text = loading.querySelector('.loading-text');
+            if (text) text.remove();
+        }
+        
+        // 更新选中信息
+        function updateSelectedInfo(code) {
+            const nameEl = document.getElementById('selectedName');
+            const codeEl = document.getElementById('selectedCode');
+            if (nameEl && codeEl) {
+                // 从全局变量获取名称，优先使用 address（地名）
+                // 如果 address 为空或是编码格式，则显示编码
+                let displayName = address;
+                if (!displayName || /^\d+$/.test(displayName)) {
+                    // 如果 address 为空或全是数字，尝试从 GeoJSON 获取名称
+                    displayName = code;  // 回退到编码
+                }
+                nameEl.textContent = displayName;
+                codeEl.textContent = code ? `(${code})` : '';
+            }
+        }
+        
+        // 必应搜索地区名称
+        function searchRegionName() {
+            const nameEl = document.getElementById('selectedName');
+            const name = nameEl.textContent;
+            if (name && name !== '-') {
+                const url = `https://cn.bing.com/search?q=${encodeURIComponent(name)}`;
+                window.open(url, '_blank');
+            }
+        }
+        
+        // 复制选中信息
+        function copySelectedInfo(btn) {
+            const nameEl = document.getElementById('selectedName');
+            const codeEl = document.getElementById('selectedCode');
+            const name = nameEl.textContent;
+            const code = codeEl.textContent.replace(/[()]/g, '');
+            const text = `${name}\t${code}`;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // 复制成功后，字体颜色变为黑色
+                nameEl.style.color = '#000';
+                codeEl.style.color = '#000';
+                
+                // 显示复制成功提示
+                const originalText = btn.textContent;
+                btn.textContent = '✓ 已复制';
+                btn.style.background = '#e6f7ff';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = 'white';
+                }, 1500);
+            }).catch(err => {
+                alert('复制失败: ' + err);
+            });
+        }
 
         // 获取并填充年份
         async function loadYears() {
@@ -440,99 +1465,245 @@
             provinceSelect.innerHTML = provinces.map(province => `<option value="${province}">${province}</option>`).join('');
         }
 
-        // 当用户点击查询按钮，加载对应年份和省份的HTML文件到左侧A部分的iframe中并更新标题
+        // 当用户点击查询按钮，加载对应年份和省份的树状视图到左侧A部分的iframe中并更新标题
         function loadProvinceData() {
+                // 标记用户已选择省份，防止resize重置
+                hasSelectedProvince = true;
+                
                 const province = document.getElementById('province').value;
                 const year = document.getElementById('year').value;
-                iframe=null
+                // 提取年份数字
+                const yearNum = year.replace('年', '');
+                
+                // 先显示加载动画
+                const loadingEl = document.getElementById('loading');
+                loadingEl.innerHTML = '<div class="loader"></div><div class="loading-text" style="margin-top: 16px; color: #718096;">正在加载地级数据...</div>';
+                loadingEl.style.display = 'flex';
+                
+                iframe = null;
                 iframe = document.getElementById('provinceData');
-                iframe.src = `/year/${encodeURIComponent(year)}/${encodeURIComponent(province)}.html`;
+                
+                // 设置iframe加载完成后隐藏loading
+                iframe.onload = function() {
+                    loadingEl.style.display = 'none';
+                };
+                
+                // 使用新的树状视图页面
+                iframe.src = `/tree.html?year=${encodeURIComponent(yearNum)}&province=${encodeURIComponent(province)}`;
                 
                 const titleDiv = document.getElementById('MAP_title');
                 titleDiv.innerHTML = `${year}${province}五级行政区划`;
+                
+                // 加载对应省份的矢量数据到地图
+                const provinceCodes = {
+                    '北京市': '110000',
+                    '天津市': '120000',
+                    '河北省': '130000',
+                    '山西省': '140000',
+                    '内蒙古自治区': '150000',
+                    '辽宁省': '210000',
+                    '吉林省': '220000',
+                    '黑龙江省': '230000',
+                    '上海市': '310000',
+                    '江苏省': '320000',
+                    '浙江省': '330000',
+                    '安徽省': '340000',
+                    '福建省': '350000',
+                    '江西省': '360000',
+                    '山东省': '370000',
+                    '河南省': '410000',
+                    '湖北省': '420000',
+                    '湖南省': '430000',
+                    '广东省': '440000',
+                    '广西壮族自治区': '450000',
+                    '海南省': '460000',
+                    '重庆市': '500000',
+                    '四川省': '510000',
+                    '贵州省': '520000',
+                    '云南省': '530000',
+                    '西藏自治区': '540000',
+                    '陕西省': '610000',
+                    '甘肃省': '620000',
+                    '青海省': '630000',
+                    '宁夏回族自治区': '640000',
+                    '新疆维吾尔自治区': '650000',
+                    '香港特别行政区': '810000',
+                    '澳门特别行政区': '820000',
+                    '台湾省': '710000'
+                };
+                
+                SHENG_datacode = provinceCodes[province];
+                if (SHENG_datacode) {
+                    // 设置省份名称用于显示和复制
+                    address = province;
+                    exportgsontoDIR(SHENG_datacode);
+                }
+                
+                // 当iframe加载完成，隐藏加载等待界面
+                iframe.onload = function() {
+                    setTimeout(function() {
+                        document.getElementById('loading').style.display = 'none';
+                    }, 600); // 你可以根据需要调整这个时间
+                };
         }
-
         // 初始加载年份，并设置事件监听器
         loadYears().then(() => {
             loadProvinces();  // 初始加载省份
         });
-        //添加拖动条
-        let isResizing = false;
-        // 当拖动开始时，动态地创建这个覆盖层，并在拖动结束时移除它
-        document.getElementById('resizer').addEventListener('mousedown', (event) => {
-            isResizing = true;
-            
-            // 添加iframe覆盖层
-            const overlay = document.createElement('div');
-            overlay.id = 'frameOverlay';
-            document.body.appendChild(overlay);
-            
-            // 为新创建的覆盖层添加mouseup事件监听器
-            overlay.addEventListener('mouseup', function handleMouseUp() {
-                isResizing = false;
-                overlay.removeEventListener('mouseup', handleMouseUp); // 移除这个特定的mouseup监听器
-                if (overlay) {
-                    overlay.parentElement.removeChild(overlay);
-                }
-                document.removeEventListener('mousemove', handleMouseMove);
+        
+        // ===== 左右拖动条 - 参考 verticalResizer，修复 iframe 事件捕获问题 =====
+let isResizing = false;
+const resizer = document.getElementById('resizer');
+const leftPanel = document.getElementById('provinceData');
+const mainContainer = document.querySelector('.main-container');
+const frameOverlay = document.getElementById('frameOverlay');
+
+if (resizer && leftPanel && mainContainer) {
+    // 鼠标按下
+    resizer.addEventListener('mousedown', (event) => {
+        isResizing = true;
+        event.preventDefault();
+        
+        // 显示覆盖层，阻止 iframe 捕获鼠标事件
+        if (frameOverlay) {
+            frameOverlay.style.display = 'block';
+            frameOverlay.style.position = 'fixed';
+            frameOverlay.style.top = '0';
+            frameOverlay.style.left = '0';
+            frameOverlay.style.right = '0';
+            frameOverlay.style.bottom = '0';
+            frameOverlay.style.zIndex = '9999';
+            frameOverlay.style.cursor = 'col-resize';
+        }
+        
+        // 禁止选中文本
+        document.body.style.userSelect = 'none';
+    });
+    
+    // 鼠标移动
+    document.addEventListener('mousemove', (event) => {
+        if (!isResizing) return;
+        
+        const containerRect = mainContainer.getBoundingClientRect();
+        let newWidth = event.clientX - containerRect.left;
+        
+        // 约束宽度
+        const minWidth = 200;
+        const maxWidth = containerRect.width * 0.85;
+        newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+        
+        leftPanel.style.width = newWidth + 'px';
+    });
+    
+    // 鼠标释放
+    document.addEventListener('mouseup', () => {
+        if (!isResizing) return;
+        isResizing = false;
+        
+        // 隐藏覆盖层
+        if (frameOverlay) {
+            frameOverlay.style.display = 'none';
+        }
+        
+        // 恢复文本选择
+        document.body.style.userSelect = '';
+    });
+    
+    // 触摸支持
+    resizer.addEventListener('touchstart', (event) => {
+        isResizing = true;
+        event.preventDefault();
+        
+        if (frameOverlay) {
+            frameOverlay.style.display = 'block';
+            frameOverlay.style.position = 'fixed';
+            frameOverlay.style.top = '0';
+            frameOverlay.style.left = '0';
+            frameOverlay.style.right = '0';
+            frameOverlay.style.bottom = '0';
+            frameOverlay.style.zIndex = '9999';
+        }
+    }, { passive: false });
+    
+    document.addEventListener('touchmove', (event) => {
+        if (!isResizing) return;
+        const touch = event.touches[0];
+        
+        const containerRect = mainContainer.getBoundingClientRect();
+        let newWidth = touch.clientX - containerRect.left;
+        
+        const minWidth = 200;
+        const maxWidth = containerRect.width * 0.85;
+        newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+        
+        leftPanel.style.width = newWidth + 'px';
+    }, { passive: false });
+    
+    document.addEventListener('touchend', () => {
+        if (!isResizing) return;
+        isResizing = false;
+        
+        if (frameOverlay) {
+            frameOverlay.style.display = 'none';
+        }
+    });
+}
+        
+        // ===== 上下拖动条 =====
+        let isVerticalResizing = false;
+        const verticalResizer = document.getElementById('verticalResizer');
+        const mapContainerEl = document.getElementById('mapContainer');
+        const selectProvinceEl = document.getElementById('SELECT_province');
+        const selectAndMapEl = document.getElementById('SELECT_AND_MAP');
+        
+        // 鼠标事件
+        if (verticalResizer) {
+            verticalResizer.addEventListener('mousedown', (event) => {
+                isVerticalResizing = true;
+                event.preventDefault();
             });
-
-            // 监听文档上的鼠标释放事件，确保释放鼠标按钮时停止拖动
-            document.addEventListener('mouseup', function stopResizing() {
-                isResizing = false;
-                document.removeEventListener('mousemove', handleMouseMove);
-                document.removeEventListener('mouseup', stopResizing);
-                if (overlay) {
-                    overlay.parentElement.removeChild(overlay);
-                }
-            });
-
-            // 监听鼠标移动事件
-            document.addEventListener('mousemove', handleMouseMove);
-            event.preventDefault();
-        });
-
-
-        overlay.addEventListener('mouseup', () => {
-            isResizing = false;
-            // 移除iframe覆盖层
-            const overlay = document.getElementById('frameOverlay');
-            if (overlay) {
-                overlay.parentElement.removeChild(overlay);
-            }
-            document.removeEventListener('mousemove', handleMouseMove);
-        });
-
-
-        document.addEventListener('mouseleave', () => {
-            isResizing = false;
-            document.removeEventListener('mousemove', handleMouseMove);
-        });
-
-        function handleMouseMove(event) {
-            // 判断拖动状态和鼠标左键是否按下
-            if (!isResizing || (event.buttons !== 1)) {
-                isResizing = false;
-                document.removeEventListener('mousemove', handleMouseMove);
+            
+            document.addEventListener('mousemove', (event) => {
+                if (!isVerticalResizing) return;
                 
-                // 移除iframe覆盖层
-                const overlay = document.getElementById('frameOverlay');
-                if (overlay) {
-                    overlay.parentElement.removeChild(overlay);
+                const containerRect = selectAndMapEl.getBoundingClientRect();
+                const mapHeight = event.clientY - containerRect.top;
+                const selectHeight = containerRect.height - mapHeight - 5; // 5是拖动条高度
+                
+                // 约束最小高度
+                if (mapHeight >= 100 && selectHeight >= 80) {
+                    mapContainerEl.style.flex = `0 0 ${mapHeight}px`;
+                    selectProvinceEl.style.flex = `0 0 ${selectHeight}px`;
                 }
-                return;
-            }
-
-            const leftPanel = document.getElementById('provinceData');
-            const container = document.querySelector("div[style='height: 90%; display: flex; width: 100%;']");
-            const resizerWidth = 5;  // 拖动条的宽度
-            let leftWidth = event.clientX - container.getBoundingClientRect().left;
-
-            // 约束leftWidth的值
-            leftWidth = Math.max(leftWidth, 100); // 最小宽度为100px
-            leftWidth = Math.min(leftWidth, container.offsetWidth - resizerWidth - 100); // 考虑到拖动条和右边面板的最小宽度
-
-            leftPanel.style.flex = `0 0 ${leftWidth}px`;
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isVerticalResizing = false;
+            });
+            
+            // 触摸支持
+            verticalResizer.addEventListener('touchstart', (event) => {
+                isVerticalResizing = true;
+                event.preventDefault();
+            }, { passive: false });
+            
+            document.addEventListener('touchmove', (event) => {
+                if (!isVerticalResizing) return;
+                const touch = event.touches[0];
+                
+                const containerRect = selectAndMapEl.getBoundingClientRect();
+                const mapHeight = touch.clientY - containerRect.top;
+                const selectHeight = containerRect.height - mapHeight - 5;
+                
+                if (mapHeight >= 100 && selectHeight >= 80) {
+                    mapContainerEl.style.flex = `0 0 ${mapHeight}px`;
+                    selectProvinceEl.style.flex = `0 0 ${selectHeight}px`;
+                }
+            }, { passive: false });
+            
+            document.addEventListener('touchend', () => {
+                isVerticalResizing = false;
+            });
         }
         
 

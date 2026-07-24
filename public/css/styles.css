@@ -1,134 +1,696 @@
+/* ===== 学术风格主题 ===== */
+/* 
+ * 设计理念：简洁、专业、数据导向
+ * 配色：低饱和度蓝灰色系
+ * 字体：衬线标题 + 无衬线正文
+ */
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --primary: #2c5282;
+    --primary-light: #4299e1;
+    --primary-dark: #1a365d;
+    --accent: #ed8936;
+    --text: #2d3748;
+    --text-light: #718096;
+    --bg: #f7fafc;
+    --bg-card: #ffffff;
+    --border: #e2e8f0;
+    --success: #38a169;
+    --warning: #dd6b20;
+}
+
 html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.6;
+    overflow: hidden;
 }
 
+/* ===== 标题栏 - 学术风格 ===== */
+#MAP_title {
+    background: var(--primary-dark);
+    color: #fff;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Serif SC', 'Source Serif Pro', Georgia, serif;
+    font-weight: 600;
+    font-size: 1.15em;
+    letter-spacing: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    border-bottom: 3px solid var(--accent);
+}
+
+/* ===== 主容器 ===== */
 #mapContainer {
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
-/* ... 任何其他样式都可以继续放在这里 ... */
-/* select, button {
-padding: 8px 15px;
-margin: 5px;
-border: none;
-border-radius: 5px;
-font-size: 1em;
-transition: background-color 0.3s, transform 0.3s;
-} */
 
-/* 下拉框样式 */
+/* ===== 左侧面板 ===== */
+#provinceData {
+    border: none;
+    width: 65%;
+    min-width: 200px;
+    max-width: 85%;
+    overflow: auto;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+/* ===== 拖动条 ===== */
+#resizer {
+    cursor: col-resize;
+    background: var(--border);
+    width: 6px;
+    transition: background 0.2s;
+    position: relative;
+    z-index: 100;
+    flex-shrink: 0;
+}
+
+#resizer:hover {
+    background: var(--primary-light);
+    width: 8px;
+}
+
+/* ===== 右侧面板 ===== */
+#SELECT_AND_MAP {
+    flex: 2;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+}
+
+/* ===== 查询区域 ===== */
+#download_info_DIV {
+    padding: 16px 20px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+}
+
+#download_info_DIV label {
+    color: var(--text);
+    font-weight: 500;
+    font-size: 13px;
+}
+
+#download_info_DIV > div:first-child label {
+    color: var(--primary);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ===== 下拉框 ===== */
 select {
-    background-color: #f7f7f7;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    font-size: 13px;
+    background: var(--bg-card);
     cursor: pointer;
-}
-
-select:hover {
-    background-color: #e5e5e5;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s;
 }
 
 select:focus {
-    outline: none;
-    background-color: #e5e5e5;
+    border-color: var(--primary-light);
 }
 
-/* 按钮样式 */
+#year { width: 80px; }
+#province { width: 130px; }
+
+/* ===== 按钮 ===== */
 button {
-    background-color: #3498db;
-    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
     cursor: pointer;
+    background: var(--primary);
+    color: white;
+    transition: all 0.2s;
 }
 
 button:hover {
-    background-color: #2980b9;
+    background: var(--primary-dark);
 }
 
 button:active {
-    transform: scale(0.98);
-}
-#provinceData {
-border: 1px solid lightblue;
-flex: 7;
-overflow: auto;
+    transform: translateY(1px);
 }
 
-#SELECT_AND_MAP {
-    flex: 3;
-    display: flex;
-    flex-direction: column;
+/* ===== 帮助图标 ===== */
+#download_info_DIV a img {
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+    margin-left: 10px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
 }
-/* 透明图层 */
-#frameOverlay {
+
+#download_info_DIV a:hover img {
+    opacity: 1;
+}
+
+/* ===== 地图容器 ===== */
+#mapContainer {
+    flex: 0 0 50%;
+    position: relative;
+    background: #e8eef4;
+    min-height: 150px;
+}
+
+/* ===== 上下拖动条 ===== */
+#verticalResizer {
+    cursor: row-resize;
+    background: var(--border);
+    height: 4px;
+    width: 100%;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+#verticalResizer:hover {
+    background: var(--primary-light);
+}
+
+/* ===== 底图选择器 ===== */
+#mapLayer {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0,0,0,0.01);  /* 几乎透明 */
-    z-index: 1000;  /* 使其位于其他内容的上方 */
+    bottom: 16px;
+    right: 16px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.1);
+    font-size: 12px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
-/* 右下角div */
-/* 选项卡样式 */
-#mapLayerControl {
+
+#mapLayerSelect {
+    padding: 6px 10px;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.85);
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text);
+}
+
+/* 点击查询县级按钮 */
+#pointQueryBtn {
+    position: absolute;
+    bottom: 16px;
+    left: 10%;
+    z-index: 1000;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 1px solid rgba(0,0,0,0.15);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    cursor: pointer;
+    font-size: 18px;
     display: flex;
-    margin-left: auto; /* 让其自动放置在其容器的右侧 */
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    overflow: hidden; /* 使内部按钮的border-radius有效 */
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.2s ease;
 }
 
-#mapLayerControl button {
-    border: none;
-    padding: 5px 15px;
-    background-color: #f7f7f7;
-    cursor: pointer;
-    transition: background-color 0.3s;
+#pointQueryBtn:hover {
+    background: rgba(255, 255, 255, 0.9);
+    transform: scale(1.05);
 }
 
-#mapLayerControl button:hover {
-    background-color: #e5e5e5;
+#pointQueryBtn.active {
+    background: rgba(66, 153, 225, 0.8);
+    border-color: #4299e1;
 }
 
-#mapLayerControl button.active {
-    background-color: #3498db;
-    color: white;
+#pointQueryBtn.active .btn-icon {
+    filter: brightness(0) invert(1);
 }
 
-/* 年份时间的选项框 */
-#year {
-width: 65px; /* 这只是一个初始宽度，根据实际情况调整 */
+#pointQueryBtn .btn-icon {
+    width: 20px;
+    height: 20px;
 }
 
-#province {
-    width: 130px; /* 这是#year的两倍 */
+/* ===== 下载区域 ===== */
+#SELECT_province {
+    flex: 0 0 35%;
+    padding: 16px;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    overflow-y: auto;
 }
 
-#formatSelect li {
-    display: inline-block; /* 添加这行使li元素水平排列 */
-    cursor: pointer;
-    padding: 5px;
-    border: 1px solid transparent;
-    transition: background-color 0.2s;
-    list-style-type: none;
-    width: calc(18% - 10px); /* 减去左右的padding */
-    box-sizing: border-box;
-}
-
-#formatSelect li:hover {
-    background-color: #e0e0e0;
-}
-
-#formatSelect li.selected {
-    background-color: blue;
-    color: white;
-}
-
-#downloadVectorBtn_DIV {
-    padding-left: 40px;
+#downloadDIV {
+    display: none;
+    padding: 16px;
+    background: var(--bg-card);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 #downloadDIV_txt {
-    font-style: italic;
-    font-weight: bold;
+    font-size: 13px;
+    color: var(--primary);
+    margin-bottom: 12px;
+    font-weight: 500;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
 }
+
+/* ===== 选中信息 ===== */
+#selectedInfo {
+    margin: 12px 0;
+    padding: 10px 14px;
+    background: var(--bg);
+    border-radius: 4px;
+    font-size: 13px;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#selectedName {
+    font-weight: 500;
+    color: var(--text);
+}
+
+#selectedCode {
+    font-family: 'Fira Code', 'Source Code Pro', monospace;
+    font-size: 12px;
+    color: var(--text-light);
+    background: var(--bg-card);
+    padding: 2px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+}
+
+/* ===== 批量下载 ===== */
+#batchDownload {
+    margin: 12px 0;
+    padding: 10px 14px;
+    background: #fffaf0;
+    border-radius: 4px;
+    font-size: 12px;
+    border: 1px solid #fbd38d;
+}
+
+#batchDownload label {
+    font-size: 12px;
+    color: var(--text);
+    cursor: pointer;
+}
+
+#batchDownload input[type="checkbox"] {
+    margin-right: 4px;
+}
+
+/* ===== 格式选择 ===== */
+#formatSelect {
+    display: flex !important;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0 0;
+}
+
+#formatSelect li {
+    padding: 6px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+    transition: all 0.15s;
+    font-family: 'Fira Code', monospace;
+}
+
+#formatSelect li:nth-child(1) { background: #3182ce; }
+#formatSelect li:nth-child(2) { background: #38a169; }
+#formatSelect li:nth-child(3) { background: #dd6b20; }
+#formatSelect li:nth-child(4) { background: #805ad5; }
+#formatSelect li:nth-child(5) { background: #d53f8c; }
+
+#formatSelect li:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+
+/* ===== 加载动画 ===== */
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.98);
+    z-index: 9999;
+}
+
+.loader {
+    border: 3px solid var(--border);
+    border-top: 3px solid var(--primary);
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ===== 移动端浮动按钮 ===== */
+.mobile-fab {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 12px rgba(44, 82, 130, 0.3);
+    font-size: 18px;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.mobile-fab:active {
+    transform: scale(0.95);
+}
+
+/* 列表按钮 - 展开选择器 */
+.mobile-list-btn {
+    bottom: 160px;
+    left: 16px;
+}
+
+/* 关闭选择器按钮 - 固定在顶部 */
+.mobile-close-btn {
+    display: none;
+    position: fixed !important;
+    top: 12px !important;
+    right: 12px !important;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 50%;
+    z-index: 101 !important;
+}
+
+/* ===== 移动端底部工具栏 ===== */
+.mobile-toolbar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    z-index: 1000;
+    padding: 8px 16px;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+}
+
+.mobile-toolbar button {
+    flex: 1;
+    margin: 0 4px;
+    padding: 10px;
+    font-size: 13px;
+}
+
+.mobile-toolbar button.primary {
+    background: var(--primary);
+}
+
+.mobile-toolbar button.secondary {
+    background: var(--text-light);
+}
+
+/* ===== 响应式设计 ===== */
+
+/* 大平板 */
+@media (max-width: 1024px) and (min-width: 769px) {
+    #MAP_title { font-size: 1.05em; height: 52px; }
+    #provinceData { min-width: 280px; max-width: 340px; }
+    #download_info_DIV { padding: 14px 16px; }
+}
+
+/* 小平板 */
+@media (max-width: 768px) and (min-width: 600px) {
+    #MAP_title { font-size: 1em; height: 48px; }
+
+    .main-container {
+        flex-direction: column !important;
+    }
+
+    /* 手机端撑满全屏（7 寸以下手机） */
+    #provinceData {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        height: 100vh !important;
+        max-height: none !important;
+        flex: none !important;
+        min-width: 100% !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        z-index: 100;
+        background: #f5f7fa;
+        border: none;
+        transform: none;
+        transition: none;
+    }
+
+    #resizer { display: none !important; }
+    #SELECT_AND_MAP { flex: 1 !important; min-width: 100% !important; }
+}
+
+/* 手机端 - 地图全屏，选择器从底部弹出 */
+@media (max-width: 599px) {
+    * {
+        box-sizing: border-box;
+    }
+    
+    html, body { 
+        font-size: 14px; 
+        overflow: hidden !important;
+        height: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* 隐藏标题 */
+    #MAP_title {
+        display: none !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* 主容器填满全屏 */
+    .main-container {
+        display: block !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        height: 100vh !important;
+        width: 100vw !important;
+        overflow: hidden !important;
+    }
+    
+    /* 手机端重设：让 iframe 撑满全屏（关键修复） */
+    #provinceData {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        height: 100vh !important;
+        max-height: none !important;
+        width: 100% !important;
+        z-index: 100;
+        background: #f5f7fa;
+        border: none;
+        flex: none !important;
+        transform: none;
+        transition: none;
+    }
+
+    /* 收起状态不再使用（手机端改用 iframe 内部自己的"看地图"按钮） */
+    #provinceData.hide {
+        transform: none;
+    }
+    
+    #resizer, 
+    #frameOverlay { 
+        display: none !important; 
+    }
+    
+    /* 右侧面板填满全屏 */
+    #SELECT_AND_MAP { 
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+        z-index: 1;
+    }
+    
+    /* 隐藏查询区域 */
+    #download_info_DIV {
+        display: none !important;
+        height: 0 !important;
+    }
+    
+    /* 地图容器 - 填满全屏 */
+    #mapContainer {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        flex: 1 !important;
+        display: block !important;
+    }
+    
+    /* 隐藏上下拖动条 */
+    #verticalResizer {
+        display: none !important;
+    }
+    
+    /* 隐藏下载区域 */
+    #SELECT_province {
+        display: none !important;
+    }
+    
+    /* 底图选择器 - 右下角 */
+    #mapLayer {
+        position: fixed !important;
+        bottom: 20px;
+        right: 10px;
+        top: auto !important;
+        padding: 5px 8px;
+        z-index: 50;
+        background: rgba(255,255,255,0.5);
+        border-radius: 6px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    
+    #mapLayerSelect {
+        padding: 4px 6px;
+        font-size: 11px;
+    }
+    
+    /* 隐藏浮动按钮 */
+    .mobile-fab { 
+        display: none !important; 
+    }
+    
+    /* 密码弹窗适配 */
+    #passwordModal > div,
+    #banModal > div {
+        margin: 16px;
+        padding: 20px;
+        max-width: calc(100% - 32px);
+    }
+    
+    #passwordModal img {
+        max-width: 160px;
+    }
+}
+
+/* 横屏手机 */
+@media (max-width: 768px) and (orientation: landscape) {
+    .main-container {
+        flex-direction: row !important;
+        height: 100vh !important;
+    }
+    
+    #provinceData {
+        position: relative !important;
+        transform: none !important;
+        flex: none !important;
+        height: 100% !important;
+        max-height: none !important;
+        max-width: 280px !important;
+        min-width: 240px !important;
+    }
+    
+    #resizer { display: block !important; }
+    #SELECT_AND_MAP { flex: 1 !important; }
+    .mobile-fab { display: none !important; }
+    #download_info_DIV > div:first-child { display: block; }
+}
+
+/* 触摸设备 */
+@media (hover: none) and (pointer: coarse) {
+    button, select, #formatSelect li {
+        min-height: 44px;
+    }
+    
+    button:active { transform: scale(0.98); }
+    #formatSelect li:active { transform: scale(0.98); }
+    #resizer { width: 12px; }
+}
+
+/* ===== 移动端地图切换状态 ===== */
+/* 手机端选择器面板展开状态 - 已在上面定义 */

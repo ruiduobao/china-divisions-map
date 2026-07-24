@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行政区划</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Source Sans Pro', -apple-system, sans-serif;
+            background: #f7fafc;
+            padding: 12px;
+            font-size: 14px;
+            color: #2d3748;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        /* 树节点 */
+        .tree-node {
+            cursor: pointer;
+            padding: 7px 10px;
+            user-select: text;
+            border-radius: 4px;
+            margin: 2px 0;
+            display: flex;
+            align-items: center;
+            min-height: 38px;
+            transition: background 0.15s;
+        }
+        
+        .tree-node:hover { background: #ebf8ff; }
+        
+        .tree-node.selected {
+            background: #ebf8ff;
+            box-shadow: inset 0 0 0 2px #4299e1;
+        }
+        
+        .tree-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+            font-size: 14px;
+        }
+        
+        .tree-icon.collapsed { transform: rotate(-90deg); }
+        
+        .tree-label {
+            display: inline-flex;
+            align-items: center;
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .tree-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        
+        .tree-code {
+            font-family: 'Fira Code', 'Source Code Pro', monospace;
+            font-size: 11px;
+            color: #718096;
+            margin-left: 8px;
+            background: #edf2f7;
+            padding: 2px 6px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+        
+        .tree-children {
+            margin-left: 18px;
+            border-left: 2px solid #e2e8f0;
+            padding-left: 8px;
+        }
+        
+        .tree-children.collapsed { display: none; }
+        
+        /* 级别样式 */
+        .level-shi { font-size: 15px; }
+        .level-shi .tree-name { color: #2c5282; font-weight: 600; }
+        
+        .level-xian { font-size: 14px; }
+        .level-xian .tree-name { color: #276749; }
+        
+        .level-xiang { font-size: 13px; }
+        .level-xiang .tree-name { color: #c05621; }
+        
+        .level-cun { font-size: 13px; }
+        .level-cun .tree-name { color: #553c9a; font-weight: 400; }
+        
+        .loading-text {
+            padding: 12px;
+            color: #a0aec0;
+            font-size: 12px;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        /* 搜索框 */
+        .search-box {
+            margin-bottom: 12px;
+            position: sticky;
+            top: 0;
+            background: #f7fafc;
+            padding: 8px 0;
+            z-index: 10;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            background: #fff;
+            color: #2d3748;
+            transition: border-color 0.15s;
+        }
+        
+        .search-box input:focus {
+            border-color: #4299e1;
+        }
+        
+        .search-box input::placeholder {
+            color: #a0aec0;
+        }
+        
+        /* 搜索结果 */
+        .search-results {
+            max-height: 280px;
+            overflow-y: auto;
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            margin-top: 8px;
+            display: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .search-results.show { display: block; }
+        
+        .search-result-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            border-bottom: 1px solid #f7fafc;
+            font-size: 13px;
+            transition: background 0.1s;
+        }
+        
+        .search-result-item:hover { background: #f7fafc; }
+        .search-result-item:last-child { border-bottom: none; }
+        
+        /* 统计信息 */
+        .stats {
+            font-size: 11px;
+            color: #718096;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 10px;
+            letter-spacing: 0.2px;
+        }
+        
+        /* 加载动画 */
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            color: #718096;
+        }
+        
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #3182ce;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 12px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 13px;
+        }
+        
+        /* 移动端优化 */
+        @media (max-width: 599px) {
+            body {
+                padding: 10px;
+                font-size: 15px;
+            }
+            
+            .tree-node {
+                padding: 10px 12px;
+                min-height: 46px;
+            }
+            
+            .tree-icon { width: 22px; height: 22px; font-size: 16px; }
+            .tree-code { font-size: 10px; padding: 2px 5px; }
+            
+            .level-shi { font-size: 16px; }
+            .level-xian { font-size: 15px; }
+            .level-xiang { font-size: 14px; }
+            .level-cun { font-size: 14px; }
+            
+            .search-box input {
+                padding: 12px 16px;
+                font-size: 16px;
+            }
+            
+            .search-result-item {
+                padding: 12px 14px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="搜索行政区划..." oninput="searchTree()">
+        <div id="searchResults" class="search-results"></div>
+    </div>
+    
+    <div class="stats" id="stats"></div>
+    <div id="treeView">
+        <div class="loading-container">
+            <div class="spinner"></div>
+            <div class="loading-text">正在加载地级数据...</div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const year = urlParams.get('year') || '2023';
+        const province = urlParams.get('province');
+        const targetCode = urlParams.get('targetCode'); // 目标编码（从搜索跳转）
+        
+        let shiData = [];
+        let fullDataCache = null;
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            if (province) {
+                loadAllData();
+            }
+        });
+        
+        // 一次性加载所有数据
+        async function loadAllData() {
+            const treeView = document.getElementById('treeView');
+            treeView.innerHTML = `
+                <div class="loading-container">
+                    <div class="spinner"></div>
+                    <div class="loading-text">正在加载数据...</div>
+                </div>
+            `;
+            
+            try {
+                // 同时加载地级市列表和完整数据
+                const [shiResult, fullResult] = await Promise.all([
+                    fetch(`/api/tree/full?year=${year}&province=${encodeURIComponent(province)}&level=shi`).then(r => r.json()),
+                    fetch(`/api/tree/full?year=${year}&province=${encodeURIComponent(province)}&level=full`).then(r => r.json())
+                ]);
+                
+                if (shiResult.status === 'success') {
+                    shiData = shiResult.data;
+                    renderShiTree(shiData);
+                    document.getElementById('stats').innerHTML = 
+                        `📍 ${province} · ${year}年 · ${shiData.length}个地级行政区`;
+                }
+                
+                if (fullResult.status === 'success') {
+                    fullDataCache = fullResult.data;
+                    
+                    // 如果有目标编码，自动展开到该节点
+                    if (targetCode) {
+                        setTimeout(() => expandToTarget(targetCode), 100);
+                    }
+                }
+            } catch (err) {
+                treeView.innerHTML = '<div class="loading-text" style="color:#c53030;">加载失败，请重试</div>';
+            }
+        }
+        
+        function renderShiTree(data) {
+            const container = document.getElementById('treeView');
+            container.innerHTML = '';
+            
+            data.forEach((shi) => {
+                const div = document.createElement('div');
+                div.className = 'tree-node level-shi';
+                div.setAttribute('data-code', shi.code);
+                div.innerHTML = `
+                    <span class="tree-icon">▶</span>
+                    <span class="tree-label">
+                        <span class="tree-name">${shi.name}</span>
+                        <span class="tree-code">${shi.code}</span>
+                    </span>
+                `;
+                
+                const childrenDiv = document.createElement('div');
+                childrenDiv.className = 'tree-children collapsed';
+                childrenDiv.innerHTML = '<div class="loading-text" style="color:#718096;">点击展开</div>';
+                div.appendChild(childrenDiv);
+                
+                div.onclick = async (e) => {
+                    e.stopPropagation();
+                    selectNode(div, shi, 'shi');
+                    
+                    if (childrenDiv.classList.contains('collapsed')) {
+                        childrenDiv.classList.remove('collapsed');
+                        div.querySelector('.tree-icon').classList.add('collapsed');
+                        if (childrenDiv.querySelector('.loading-text')) {
+                            await loadXianData(shi, childrenDiv);
+                        }
+                    } else {
+                        childrenDiv.classList.add('collapsed');
+                        div.querySelector('.tree-icon').classList.remove('collapsed');
+                    }
+                };
+                
+                container.appendChild(div);
+            });
+        }
+        
+        async function loadXianData(shi, container) {
+            // 先从缓存获取
+            if (fullDataCache) {
+                const cachedShi = fullDataCache.find(s => s.code === shi.code);
+                if (cachedShi?.counties) {
+                    renderXianTree(cachedShi.counties, container);
+                    return;
+                }
+            }
+            
+            // 缓存没有，显示无数据
+            container.innerHTML = '<div class="loading-text" style="color:#718096;">暂无数据</div>';
+        }
+        
+        // 自动展开到目标编码
+        function expandToTarget(targetCode) {
+            if (!fullDataCache || !targetCode) return;
+            
+            const xianCode = targetCode.substring(0, 6);
+            const shiCode = targetCode.substring(0, 4) + '00';
+            
+            // 找到对应的地级市
+            const shiNode = document.querySelector(`.tree-node[data-code="${shiCode}"]`);
+            if (shiNode) {
+                // 模拟点击展开
+                shiNode.click();
+                
+                setTimeout(() => {
+                    // 找到县级节点
+                    const xianNode = document.querySelector(`.tree-node[data-code="${xianCode}"]`);
+                    if (xianNode) {
+                        xianNode.click();
+                        
+                        // 如果是乡镇或村级，继续展开
+                        if (targetCode.length >= 9) {
+                            setTimeout(() => {
+                                const xiangCode = targetCode.substring(0, 9) + '000';
+                                const xiangNode = document.querySelector(`.tree-node[data-code="${xiangCode}"]`);
+                                if (xiangNode) {
+                                    xiangNode.click();
+                                    
+                                    // 如果是村级，高亮村级节点
+                                    if (targetCode.length === 12 && !targetCode.endsWith('000')) {
+                                        setTimeout(() => {
+                                            const cunNode = document.querySelector(`.tree-node[data-code="${targetCode}"]`);
+                                            if (cunNode) {
+                                                cunNode.classList.add('selected');
+                                                cunNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                            }
+                                        }, 300);
+                                    }
+                                }
+                            }, 300);
+                        }
+                        
+                        // 高亮县级节点
+                        xianNode.classList.add('selected');
+                        xianNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 500);
+            }
+        }
+        
+        function renderXianTree(counties, container) {
+            container.innerHTML = '';
+            if (!counties?.length) {
+                container.innerHTML = '<div class="loading-text">暂无数据</div>';
+                return;
+            }
+            
+            counties.forEach((xian) => {
+                const div = document.createElement('div');
+                div.className = 'tree-node level-xian';
+                div.setAttribute('data-code', xian.code);
+                div.innerHTML = `
+                    <span class="tree-icon">▶</span>
+                    <span class="tree-label">
+                        <span class="tree-name">${xian.name}</span>
+                        <span class="tree-code">${xian.code}</span>
+                    </span>
+                `;
+                
+                const childrenDiv = document.createElement('div');
+                childrenDiv.className = 'tree-children collapsed';
+                div.appendChild(childrenDiv);
+                
+                div.onclick = (e) => {
+                    e.stopPropagation();
+                    selectNode(div, xian, 'xian');
+                    
+                    if (childrenDiv.classList.contains('collapsed')) {
+                        childrenDiv.classList.remove('collapsed');
+                        div.querySelector('.tree-icon').classList.add('collapsed');
+                        
+                        // 从缓存获取乡镇数据
+                        if (fullDataCache) {
+                            for (const shi of fullDataCache) {
+                                const cachedXian = shi.counties?.find(x => x.code === xian.code);
+                                if (cachedXian?.towns?.length) {
+                                    renderXiangTree(cachedXian.towns, childrenDiv);
+                                    return;
+                                }
+                            }
+                        }
+                        childrenDiv.innerHTML = '<div class="loading-text" style="color:#718096;">暂无数据</div>';
+                    } else {
+                        childrenDiv.classList.add('collapsed');
+                        div.querySelector('.tree-icon').classList.remove('collapsed');
+                    }
+                };
+                
+                container.appendChild(div);
+            });
+        }
+        
+        function renderXiangTree(towns, container) {
+            container.innerHTML = '';
+            if (!towns?.length) {
+                container.innerHTML = '<div class="loading-text">暂无数据</div>';
+                return;
+            }
+            
+            towns.forEach((xiang) => {
+                const div = document.createElement('div');
+                div.className = 'tree-node level-xiang';
+                div.setAttribute('data-code', xiang.code);
+                div.innerHTML = `
+                    <span class="tree-icon">▶</span>
+                    <span class="tree-label">
+                        <span class="tree-name">${xiang.name}</span>
+                        <span class="tree-code">${xiang.code}</span>
+                    </span>
+                `;
+                
+                const childrenDiv = document.createElement('div');
+                childrenDiv.className = 'tree-children collapsed';
+                div.appendChild(childrenDiv);
+                
+                div.onclick = (e) => {
+                    e.stopPropagation();
+                    selectNode(div, xiang, 'xiang');
+                    
+                    if (childrenDiv.classList.contains('collapsed')) {
+                        childrenDiv.classList.remove('collapsed');
+                        div.querySelector('.tree-icon').classList.add('collapsed');
+                        
+                        if (xiang.villages?.length) {
+                            renderCunTree(xiang.villages, childrenDiv);
+                        } else {
+                            childrenDiv.innerHTML = '<div class="loading-text">暂无村级数据</div>';
+                        }
+                    } else {
+                        childrenDiv.classList.add('collapsed');
+                        div.querySelector('.tree-icon').classList.remove('collapsed');
+                    }
+                };
+                
+                container.appendChild(div);
+            });
+        }
+        
+        function renderCunTree(villages, container) {
+            container.innerHTML = '';
+            
+            villages.forEach((cun) => {
+                const div = document.createElement('div');
+                div.className = 'tree-node level-cun';
+                div.setAttribute('data-code', cun.code);
+                div.innerHTML = `
+                    <span class="tree-icon" style="opacity:0.3;">●</span>
+                    <span class="tree-label">
+                        <span class="tree-name">${cun.name}</span>
+                        <span class="tree-code">${cun.code}</span>
+                    </span>
+                `;
+                
+                div.onclick = (e) => {
+                    e.stopPropagation();
+                    selectNode(div, cun, 'cun');
+                };
+                
+                container.appendChild(div);
+            });
+        }
+        
+        function selectNode(element, node, level) {
+            document.querySelectorAll('.tree-node.selected').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            
+            if (window.innerWidth <= 599 && level === 'cun') {
+                const panel = window.parent.document.getElementById('provinceData');
+                if (panel) panel.classList.remove('show');
+            }
+            
+            window.parent.postMessage({
+                type: 'updateMapByCode',
+                code: node.code,
+                name: node.name,
+                level: level
+            }, '*');
+        }
+        
+        let searchAbortController = null;
+        
+        async function searchTree() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (!keyword) {
+                resultsDiv.classList.remove('show');
+                return;
+            }
+            
+            // 取消之前的搜索
+            if (searchAbortController) {
+                searchAbortController.abort();
+            }
+            searchAbortController = new AbortController();
+            
+            // 清空结果显示
+            resultsDiv.innerHTML = '<div class="search-result-item" style="color:#718096;">正在搜索...</div>';
+            resultsDiv.classList.add('show');
+            
+            let results = [];
+            let provinceDone = false;
+            
+            try {
+                // 使用 EventSource 接收流式结果
+                const url = `/search?keyword=${encodeURIComponent(keyword)}&province=${encodeURIComponent(province)}&limit=10`;
+                const response = await fetch(url, { signal: searchAbortController.signal });
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    const text = decoder.decode(value);
+                    const lines = text.split('\n');
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            try {
+                                const data = JSON.parse(line.substring(6));
+                                
+                                if (data.type === 'result') {
+                                    results.push(data.data);
+                                    // 实时更新显示
+                                    updateSearchResults(results, data.scope);
+                                } else if (data.type === 'provinceDone') {
+                                    provinceDone = true;
+                                    if (!data.hasResults) {
+                                        resultsDiv.innerHTML = '<div class="search-result-item" style="color:#718096;">省内无结果，正在搜索全国...</div>';
+                                    }
+                                } else if (data.type === 'done') {
+                                    if (results.length === 0) {
+                                        resultsDiv.innerHTML = '<div class="search-result-item" style="color:#718096;">未找到结果</div>';
+                                    }
+                                }
+                            } catch (e) {}
+                        }
+                    }
+                }
+            } catch (err) {
+                if (err.name !== 'AbortError') {
+                    resultsDiv.innerHTML = '<div class="search-result-item" style="color:#c53030;">搜索失败</div>';
+                }
+            }
+        }
+        
+        function updateSearchResults(results, scope) {
+            const resultsDiv = document.getElementById('searchResults');
+            
+            if (results.length === 0) return;
+            
+            // 按级别排序：省 > 市 > 县 > 村
+            const levelOrder = { sheng: 1, shi: 2, xian: 3, cun: 4 };
+            results.sort((a, b) => (levelOrder[a.level] || 5) - (levelOrder[b.level] || 5));
+            
+            let html = results.slice(0, 20).map((r, i) => `
+                <div class="search-result-item" onclick="jumpToResult('${r.code}', '${r.name}', '${r.level}')">
+                    <strong>${r.name}</strong> 
+                    <span style="color:#a0aec0;font-size:11px;">${r.code}</span>
+                    ${r.province_name ? `<span style="color:#718096;font-size:10px;">(${r.province_name})</span>` : ''}
+                </div>
+            `).join('');
+            
+            // 如果省内搜索完成且有结果，显示全国搜索提示
+            if (scope === 'nationwide' && results.length > 0) {
+                html += '<div class="search-result-item" style="color:#a0aec0;font-size:11px;border-top:1px solid #e2e8f0;">— 全国搜索结果 —</div>';
+            }
+            
+            resultsDiv.innerHTML = html;
+        }
+        
+        function jumpToResult(code, name, level) {
+            // 发送消息给父页面，跳转到对应位置
+            window.parent.postMessage({
+                type: 'jumpToRegion',
+                code: code,
+                name: name,
+                level: level,
+                targetCode: code // 用于左侧树展开
+            }, '*');
+            
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchResults').classList.remove('show');
+        }
+
+        // 监听父页面消息，用于点击查询后展开到县级
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'expandToCounty') {
+                const { countyCode, countyName, shengCode, shiCode } = event.data;
+                // 使用已有的expandToTarget函数
+                expandToTarget(countyCode);
+            }
+        });
+
+        // 展开到指定县级节点（保留备用）
+        async function expandToCounty(countyCode, countyName, shiCode) {
+            expandToTarget(countyCode);
+        }
+    </script>
+</body>
+</html>

@@ -1,2 +1,61 @@
+# Dependencies
 node_modules/
-public/vectordata
+
+# Environment / sensitive
+.env
+.env.local
+.env.*.local
+
+# Vector data (large binary files)
+public/vectordata/
+*.gson
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+*.sbx
+*.sbn
+
+# Cache & temp
+cache/
+*.tmp
+tmp/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+cleanup.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# System
+.DS_Store
+Thumbs.db
+
+# Backup files
+.bak*/
+*.bak
+*.backup
+*副本*
+*备份*
+
+# Large binaries
+*.rpm
+postgis*.rpm
+
+# Package lock (optional - uncomment if you want to exclude)
+# package-lock.json
+
+# OS / Editor
+.claude/
+.well-known/
+
+# Old/deprecated files
+my.geojson
+my-shp.zip

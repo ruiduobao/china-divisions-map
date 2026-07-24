@@ -147,14 +147,26 @@ case 'updateMapByAddress':
 case 'updateMapByCode':
     dataCode = event.data.code;  //// 更新全局变量dataCode
     address = null;  // 清除address的值
-    exportgsontoDIR(dataCode)
-        .then(() => {
-            console.log('Successfully completed exportgsontoDIR!'); // 打印 exportgsontoDIR 完成状态
-        })
-        .catch(error => {
-            console.log('exportgsontoDIR! failed'); // 打印 exportgsontoDIR 完成状态
-            console.error('Error in the sequence:', error);
-        });
+    console.log('Received code:', dataCode, 'Level:', event.data.level);
+    
+    // 根据编码长度判断级别并调用不同的API
+    if (dataCode.length === 12) {
+        // 村级编码 - 使用村级API
+        loadCunData(dataCode);
+    } else if (dataCode.length === 9) {
+        // 乡镇级编码 - 补全为12位
+        exportgsontoDIR(dataCode + '000');
+    } else {
+        // 省市县级
+        exportgsontoDIR(dataCode)
+            .then(() => {
+                console.log('Successfully completed exportgsontoDIR!');
+            })
+            .catch(error => {
+                console.log('exportgsontoDIR! failed');
+                console.error('Error in the sequence:', error);
+            });
+    }
     break;
 //首页的消息接收
 case 'updateMapByYearsheng':
@@ -175,7 +187,9 @@ case 'updateMapByYearsheng':
     //清楚iframe的值
     iframe == null
     iframe = document.getElementById('provinceData');
-    iframe.src = `/year/${encodeURIComponent(Year)}/${encodeURIComponent(Province)}.html`;
+    // 使用新的树状视图
+    const yearNum = Year.replace('年', '');
+    iframe.src = `/tree.html?year=${encodeURIComponent(yearNum)}&province=${encodeURIComponent(Province)}`;
     const titleDiv = document.getElementById('MAP_title');
     titleDiv.innerHTML = `${Year}${Province}五级行政区划`;
     //加载对应省份的代码到地图中
@@ -220,6 +234,30 @@ case 'updateMapByYearsheng':
     break;
     }
 });
+
+// 加载村级数据
+function loadCunData(cunCode) {
+    fetch(`/getCunAddress?code=${cunCode}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('No data');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Cun data:', data);
+            if(data.status === 'success') {
+                checkAndShowDownloadButton(cunCode);
+                loadGeoJSONfromPath(data.filepath + '?t=' + Date.now());
+            } else {
+                alert('数据库中没有该村的面数据或点数据，请尝试其他村');
+            }
+        })
+        .catch(error => {
+            console.error('Error loading cun data:', error);
+            alert('数据库中没有该村的面数据或点数据，请尝试其他村');
+        });
+}
 
 //将数据库中查询到的矢量导出到文件夹中
 function exportgsontoDIR(dataCode) {
@@ -304,7 +342,7 @@ function loadGeoJSONfromPath(filepath) {
                         path: lnglats,
                         strokeColor: '#ff33cc',
                         fillColor: '#ffc3a0',
-                        fillOpacity: 0.5
+                        fillOpacity: 0  // 空心实线，内部无填充
                     });
                 }
             });
@@ -356,94 +394,161 @@ async function loadProvinces() {
 function loadProvinceData() {
         const province = document.getElementById('province').value;
         const year = document.getElementById('year').value;
+        // 提取年份数字
+        const yearNum = year.replace('年', '');
+        
         iframe=null
         iframe = document.getElementById('provinceData');
-        iframe.src = `/year/${encodeURIComponent(year)}/${encodeURIComponent(province)}.html`;
+        // 使用新的树状视图页面
+        iframe.src = `/tree.html?year=${encodeURIComponent(yearNum)}&province=${encodeURIComponent(province)}`;
         
         const titleDiv = document.getElementById('MAP_title');
         titleDiv.innerHTML = `${year}${province}五级行政区划`;
+        
+        // 加载对应省份的矢量数据到地图
+        const provinceCodes = {
+            '北京市': '110000',
+            '天津市': '120000',
+            '河北省': '130000',
+            '山西省': '140000',
+            '内蒙古自治区': '150000',
+            '辽宁省': '210000',
+            '吉林省': '220000',
+            '黑龙江省': '230000',
+            '上海市': '310000',
+            '江苏省': '320000',
+            '浙江省': '330000',
+            '安徽省': '340000',
+            '福建省': '350000',
+            '江西省': '360000',
+            '山东省': '370000',
+            '河南省': '410000',
+            '湖北省': '420000',
+            '湖南省': '430000',
+            '广东省': '440000',
+            '广西壮族自治区': '450000',
+            '海南省': '460000',
+            '重庆市': '500000',
+            '四川省': '510000',
+            '贵州省': '520000',
+            '云南省': '530000',
+            '西藏自治区': '540000',
+            '陕西省': '610000',
+            '甘肃省': '620000',
+            '青海省': '630000',
+            '宁夏回族自治区': '640000',
+            '新疆维吾尔自治区': '650000',
+            '香港特别行政区': '810000',
+            '澳门特别行政区': '820000',
+            '台湾省': '710000'
+        };
+        
+        const SHENG_datacode = provinceCodes[province];
+        if (SHENG_datacode) {
+            exportgsontoDIR(SHENG_datacode);
+        }
 }
 
 // 初始加载年份，并设置事件监听器
 loadYears().then(() => {
     loadProvinces();  // 初始加载省份
 });
-//添加拖动条
+// ===== 左右拖动条 - 参考 verticalResizer，修复 iframe 事件捕获问题 =====
 let isResizing = false;
-// 当拖动开始时，动态地创建这个覆盖层，并在拖动结束时移除它
-document.getElementById('resizer').addEventListener('mousedown', (event) => {
-    isResizing = true;
-    
-    // 添加iframe覆盖层
-    const overlay = document.createElement('div');
-    overlay.id = 'frameOverlay';
-    document.body.appendChild(overlay);
-    
-    // 为新创建的覆盖层添加mouseup事件监听器
-    overlay.addEventListener('mouseup', function handleMouseUp() {
-        isResizing = false;
-        overlay.removeEventListener('mouseup', handleMouseUp); // 移除这个特定的mouseup监听器
-        if (overlay) {
-            overlay.parentElement.removeChild(overlay);
-        }
-        document.removeEventListener('mousemove', handleMouseMove);
-    });
+const resizer = document.getElementById('resizer');
+const leftPanel = document.getElementById('provinceData');
+const mainContainer = document.querySelector('.main-container');
+const frameOverlay = document.getElementById('frameOverlay');
 
-    // 监听文档上的鼠标释放事件，确保释放鼠标按钮时停止拖动
-    document.addEventListener('mouseup', function stopResizing() {
-        isResizing = false;
-        document.removeEventListener('mousemove', handleMouseMove);
-        document.removeEventListener('mouseup', stopResizing);
-        if (overlay) {
-            overlay.parentElement.removeChild(overlay);
-        }
-    });
-
-    // 监听鼠标移动事件
-    document.addEventListener('mousemove', handleMouseMove);
-    event.preventDefault();
-});
-
-
-overlay.addEventListener('mouseup', () => {
-    isResizing = false;
-    // 移除iframe覆盖层
-    const overlay = document.getElementById('frameOverlay');
-    if (overlay) {
-        overlay.parentElement.removeChild(overlay);
-    }
-    document.removeEventListener('mousemove', handleMouseMove);
-});
-
-
-document.addEventListener('mouseleave', () => {
-    isResizing = false;
-    document.removeEventListener('mousemove', handleMouseMove);
-});
-
-function handleMouseMove(event) {
-    // 判断拖动状态和鼠标左键是否按下
-    if (!isResizing || (event.buttons !== 1)) {
-        isResizing = false;
-        document.removeEventListener('mousemove', handleMouseMove);
+if (resizer && leftPanel && mainContainer) {
+    // 鼠标按下开始拖动
+    resizer.addEventListener('mousedown', (event) => {
+        isResizing = true;
+        event.preventDefault();
         
-        // 移除iframe覆盖层
-        const overlay = document.getElementById('frameOverlay');
-        if (overlay) {
-            overlay.parentElement.removeChild(overlay);
+        // 显示覆盖层，阻止 iframe 捕获鼠标事件
+        if (frameOverlay) {
+            frameOverlay.style.display = 'block';
+            frameOverlay.style.position = 'fixed';
+            frameOverlay.style.top = '0';
+            frameOverlay.style.left = '0';
+            frameOverlay.style.right = '0';
+            frameOverlay.style.bottom = '0';
+            frameOverlay.style.zIndex = '9999';
+            frameOverlay.style.cursor = 'col-resize';
         }
-        return;
-    }
-
-    const leftPanel = document.getElementById('provinceData');
-    const container = document.querySelector("div[style='height: 90%; display: flex; width: 100%;']");
-    const resizerWidth = 5;  // 拖动条的宽度
-    let leftWidth = event.clientX - container.getBoundingClientRect().left;
-
-    // 约束leftWidth的值
-    leftWidth = Math.max(leftWidth, 100); // 最小宽度为100px
-    leftWidth = Math.min(leftWidth, container.offsetWidth - resizerWidth - 100); // 考虑到拖动条和右边面板的最小宽度
-
-    leftPanel.style.flex = `0 0 ${leftWidth}px`;
+        
+        // 禁止选中文本
+        document.body.style.userSelect = 'none';
+    });
+    
+    // 鼠标移动
+    document.addEventListener('mousemove', (event) => {
+        if (!isResizing) return;
+        
+        const containerRect = mainContainer.getBoundingClientRect();
+        let newWidth = event.clientX - containerRect.left;
+        
+        // 约束宽度范围
+        const minWidth = 200;
+        const maxWidth = containerRect.width * 0.85;
+        newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+        
+        // 设置新宽度
+        leftPanel.style.width = newWidth + 'px';
+    });
+    
+    // 鼠标释放
+    document.addEventListener('mouseup', () => {
+        if (!isResizing) return;
+        isResizing = false;
+        
+        // 隐藏覆盖层
+        if (frameOverlay) {
+            frameOverlay.style.display = 'none';
+        }
+        
+        // 恢复文本选择
+        document.body.style.userSelect = '';
+    });
+    
+    // 触摸支持
+    resizer.addEventListener('touchstart', (event) => {
+        isResizing = true;
+        event.preventDefault();
+        
+        if (frameOverlay) {
+            frameOverlay.style.display = 'block';
+            frameOverlay.style.position = 'fixed';
+            frameOverlay.style.top = '0';
+            frameOverlay.style.left = '0';
+            frameOverlay.style.right = '0';
+            frameOverlay.style.bottom = '0';
+            frameOverlay.style.zIndex = '9999';
+        }
+    }, { passive: false });
+    
+    document.addEventListener('touchmove', (event) => {
+        if (!isResizing) return;
+        const touch = event.touches[0];
+        
+        const containerRect = mainContainer.getBoundingClientRect();
+        let newWidth = touch.clientX - containerRect.left;
+        
+        const minWidth = 200;
+        const maxWidth = containerRect.width * 0.85;
+        newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+        
+        leftPanel.style.width = newWidth + 'px';
+    }, { passive: false });
+    
+    document.addEventListener('touchend', () => {
+        if (!isResizing) return;
+        isResizing = false;
+        
+        if (frameOverlay) {
+            frameOverlay.style.display = 'none';
+        }
+    });
 }
 
