@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 // 定义要操作的文件夹路径
-const targetDir = "E:\\个人\\博客\\锐多宝矢量\\data\\网站\\gaode_MAP_CUN\\处理脚本\\data\\生成的html文件\\首页";
+const targetDir = process.env.DATA_DIR || "./data/生成的html文件/首页";
 
 // 定义替换的新内容
 const newContent = `<body>

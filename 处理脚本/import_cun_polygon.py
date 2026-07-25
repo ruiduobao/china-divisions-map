@@ -9,13 +9,13 @@ import subprocess
 import psycopg2
 from pathlib import Path
 
-# 数据库连接配置
+# 数据库连接配置（从环境变量读取）
 DB_CONFIG = {
-    'host': 'localhost',
-    'port': 5432,
-    'database': 'shengshixian',
-    'user': 'ruiduobao',
-    'password': 'RDB123456.'
+    'host': os.environ.get('DB_HOST', 'localhost'),
+    'port': int(os.environ.get('DB_PORT', '5432')),
+    'database': os.environ.get('DB_NAME', 'shengshixian'),
+    'user': os.environ.get('DB_USER', 'ruiduobao'),
+    'password': os.environ.get('DB_PASSWORD', '')
 }
 
 # 数据目录

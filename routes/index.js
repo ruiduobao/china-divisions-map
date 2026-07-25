@@ -6,6 +6,7 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
+const { config } = require('../config');
 const ApiResponse = require('../utils/response');
 
 // 获取项目根目录的绝对路径
@@ -15,7 +16,7 @@ const PROJECT_ROOT = path.resolve(__dirname, '..');
  * 主页
  */
 router.get('/', (req, res) => {
-    res.render('index', { latitude: 35, longitude: 108 });
+    res.render('index', { config, latitude: 35, longitude: 108 });
 });
 
 /**

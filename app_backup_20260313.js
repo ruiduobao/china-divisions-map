@@ -11,7 +11,7 @@ const dbConfig = {
     port: 5432,
     database: 'shengshixian',
     user: 'ruiduobao',
-    password: 'RDB123456.'
+    password: process.env.DB_PASSWORD || ''
 };
 
 const db = pgp(dbConfig);
@@ -90,7 +90,7 @@ app.get('/getGeoAddress', async (req, res, next) => {
         return next(error);
     }
 
-    const GAODE_API_KEY = 'a73eda1d713ad6a23f2712b7fe99161d';
+    const GAODE_API_KEY = config.gaode.geocodeKey;
     const GAODE_GEOCODE_URL = `https://restapi.amap.com/v3/geocode/geo?address=${encodeURIComponent(placeName)}&key=${GAODE_API_KEY}`;
 
     let location = null;
@@ -174,7 +174,7 @@ app.get('/getCunAddress', async (req, res, next) => {
             // 未在数据库中查询到的点，则进行地理编码
             else{
                 
-                    const GAODE_API_KEY = 'b6ba147ffd1e49158d12f7cb16d0f381';
+                    const GAODE_API_KEY = config.gaode.apiKey;
                     const GAODE_GEOCODE_URL = `https://restapi.amap.com/v3/geocode/geo?address=${encodeURIComponent(placeName)}&key=${GAODE_API_KEY}`;
 
                     let location = null;

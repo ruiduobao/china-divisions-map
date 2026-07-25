@@ -38,7 +38,7 @@ app.post('/place', async (req, res) => {
         return next(error);
     }
 
-    const GAODE_API_KEY = 'b6ba147ffd1e49158d12f7cb16d0f381';
+    const GAODE_API_KEY = config.gaode.apiKey;
     const GAODE_GEOCODE_URL = `https://restapi.amap.com/v3/geocode/geo?address=${encodeURIComponent(placeName)}&key=${GAODE_API_KEY}`;
 
     let location = null; // 定义location变量在try块之前
@@ -100,7 +100,7 @@ app.get('/getGeoAddress', async (req, res, next) => {
         return next(error);
     }
 
-    const GAODE_API_KEY = 'b6ba147ffd1e49158d12f7cb16d0f381';
+    const GAODE_API_KEY = config.gaode.apiKey;
     const GAODE_GEOCODE_URL = `https://restapi.amap.com/v3/geocode/geo?address=${encodeURIComponent(placeName)}&key=${GAODE_API_KEY}`;
 
     let location = null;

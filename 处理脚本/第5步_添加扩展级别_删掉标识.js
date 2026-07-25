@@ -68,7 +68,7 @@ const replaceInDir = async (dir) => {
     }
 }
 
-const targetDir = "E:\\个人\\博客\\锐多宝矢量\\data\\网站\\gaode_MAP_CUN\\处理脚本\\data\\生成的html文件\\首页";
+const targetDir = process.env.DATA_DIR || "./data/生成的html文件/首页";
 
 //  除掉html的markmap标识
 //targetDir是异步函数，把replaceStringInHtmlFiles放到replaceInDir之后，使用then

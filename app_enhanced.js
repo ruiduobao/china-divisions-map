@@ -26,11 +26,11 @@ const crypto = require('crypto');
 // 数据库配置
 const pgp = require('pg-promise')();
 const dbConfig = {
-    host: 'localhost',
-    port: 5432,
-    database: 'shengshixian',
-    user: 'ruiduobao',
-    password: 'RDB123456.'
+    host: process.env.DB_HOST || 'localhost',
+    port: parseInt(process.env.DB_PORT) || 5432,
+    database: process.env.DB_NAME || 'shengshixian',
+    user: process.env.DB_USER || 'ruiduobao',
+    password: process.env.DB_PASSWORD || ''
 };
 const db = pgp(dbConfig);
 
@@ -255,7 +255,7 @@ async function queryCunByName(placeName) {
  * 地理编码并返回结果
  */
 async function geocodeAndReturn(res, placeName) {
-    const GAODE_API_KEY = 'b6ba147ffd1e49158d12f7cb16d0f381';
+    const GAODE_API_KEY = config.gaode.apiKey;
     const GAODE_GEOCODE_URL = `https://restapi.amap.com/v3/geocode/geo?address=${encodeURIComponent(placeName)}&key=${GAODE_API_KEY}`;
 
     try {
@@ -839,7 +839,7 @@ app.get('/getGeoAddress', async (req, res, next) => {
     }
 
     try {
-        const GAODE_API_KEY = 'a73eda1d713ad6a23f2712b7fe99161d';
+        const GAODE_API_KEY = config.gaode.geocodeKey;
         const GAODE_GEOCODE_URL = `https://restapi.amap.com/v3/geocode/geo?address=${encodeURIComponent(placeName)}&key=${GAODE_API_KEY}`;
 
         const response = await axios.get(GAODE_GEOCODE_URL);

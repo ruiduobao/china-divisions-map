@@ -5,11 +5,11 @@
 
 set -e
 
-DB_HOST="localhost"
-DB_PORT="5432"
-DB_NAME="shengshixian"
-DB_USER="ruiduobao"
-DB_PASS="RDB123456."
+DB_HOST="${DB_HOST:-localhost}"
+DB_PORT="${DB_PORT:-5432}"
+DB_NAME="${DB_NAME:-shengshixian}"
+DB_USER="${DB_USER:-ruiduobao}"
+DB_PASS="${DB_PASS:-}"
 
 BASE_DIR="/opt/1panel/apps/openresty/openresty/www/wwwroot/map.ruiduobao.com/处理脚本/data/省市县"
 

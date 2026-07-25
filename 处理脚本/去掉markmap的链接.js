@@ -27,7 +27,7 @@ const replaceInDir = async (dir) => {
 }
 
 // 请将以下目录替换为你的HTML文件目录
-const targetDir = 'E:\\个人\\博客\\锐多宝矢量\\data\\网站\\gaode_MAP_CUN\\year\\2023年'; 
+const targetDir = process.env.YEAR_DATA_DIR || './year/2023年'; 
 
 replaceInDir(targetDir)
     .then(() => console.log('Done'))

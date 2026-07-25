@@ -37,5 +37,5 @@ function replaceStringInHtmlFiles(directoryPath, oldString, newString) {
 }
 
 // 调用函数，传递目录路径和替换字符串
-const PATH = "E:\\个人\\博客\\锐多宝矢量\\data\\网站\\gaode_MAP_CUN\\处理脚本\\data_example\\生成的html文件";
+const PATH = process.env.DATA_DIR || "./data_example/生成的html文件";
 replaceStringInHtmlFiles(PATH, '"children":[]}]}]}]}]},null', '"children":[]}]}]}]}]},{"initialExpandLevel":1}');
